@@ -1,0 +1,581 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reading Excel Files &mdash; Tutorial 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Tutorial 1.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Tutorial 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="reading-excel-files">
+<h1>Reading Excel Files<a class="headerlink" href="#reading-excel-files" title="Permalink to this headline">¶</a></h1>
+<p>All the examples shown below can be found in the
+xlrd
+directory of the course material.</p>
+<div class="section" id="opening-workbooks">
+<h2>Opening Workbooks<a class="headerlink" href="#opening-workbooks" title="Permalink to this headline">¶</a></h2>
+<p>Workbooks can be loaded either from a file, an
+mmap.mmap
+object or from a string:</p>
+</div>
+<div class="section" id="navigating-a-workbook">
+<h2>Navigating a Workbook<a class="headerlink" href="#navigating-a-workbook" title="Permalink to this headline">¶</a></h2>
+<p>Here is a simple example of workbook navigation:</p>
+<p>The next few sections will cover the navigation of workbooks in more detail.</p>
+<div class="section" id="introspecting-a-book">
+<h3>Introspecting a Book<a class="headerlink" href="#introspecting-a-book" title="Permalink to this headline">¶</a></h3>
+<p>The
+xlrd.Book
+object returned by
+open_workbook
+contains all information to do with the workbook and can be used to retrieve individual sheets within the workbook.</p>
+<p>The
+nsheets
+attribute is an integer containing the number of sheets in the workbook. This attribute, in combination with the
+sheet_by_index</p>
+<p>method, is the most common way of retrieving individual sheets.</p>
+<p>The
+sheet_names
+method returns a list of unicodes containing the names of all sheets in the workbook. Individual sheets can be retrieved using these names by way of the
+sheet_by_name
+function.</p>
+<p>The results of the
+sheets
+method can be iterated over to retrieve each of the sheets in the workbook.</p>
+<p>The following example demonstrates these methods and attributes:</p>
+<p>xlrd.Book
+objects have other attributes relating to the content of the workbook that are only rarely useful:</p>
+<ul class="simple">
+<li>codepage</li>
+<li>countries</li>
+<li>user_name</li>
+</ul>
+<p>If you think you may need to use these attributes, please see the
+xlrd
+documentation.</p>
+</div>
+<div class="section" id="introspecting-a-sheet">
+<h3>Introspecting a Sheet<a class="headerlink" href="#introspecting-a-sheet" title="Permalink to this headline">¶</a></h3>
+<p>The
+xlrd.sheet.Sheet
+objects returned by any of the methods described above contain all the information to do with a worksheet and its contents.</p>
+<p>The
+name
+attribute is a unicode representing the name of the worksheet.</p>
+<p>The
+nrows
+and
+ncols
+attributes contain the number of rows and the number of columns, respectively, in the worksheet.</p>
+<p>The following example shows how these can be used to iterate over and display the contents of one worksheet:</p>
+<p>xlrd.sheet.Sheet
+objects have other attributes relating to the content of the worksheet that are only rarely useful:</p>
+<ul class="simple">
+<li>col_label_ranges</li>
+<li>row_label_ranges</li>
+<li>visibility</li>
+</ul>
+<p>If you think you may need to use these attributes, please see the
+xlrd
+documentation.</p>
+</div>
+<div class="section" id="getting-a-particular-cell">
+<h3>Getting a particular Cell<a class="headerlink" href="#getting-a-particular-cell" title="Permalink to this headline">¶</a></h3>
+<p>As already seen in previous examples, the
+cell
+method of a
+Sheet
+object can be used to return the contents of a particular cell.</p>
+<p>The
+cell
+method returns an
+xlrd.sheet.Cell
+object. These objects have very few attributes, of which
+value
+contains the actual value of the cell and
+ctype
+contains the type of the cell.</p>
+<p>In addition,
+Sheet
+objects have two methods for returning these two types of data. The
+cell_value
+method returns the value for a particular cell, while the
+cell_type
+method returns the type of a particular cell. These methods can be quicker to execute than retrieving the
+Cell
+object.</p>
+<p>Cell types are covered in more detail later. The following example shows the methods, attributes and classes in action:</p>
+</div>
+<div class="section" id="iterating-over-the-contents-of-a-sheet">
+<h3>Iterating over the contents of a Sheet<a class="headerlink" href="#iterating-over-the-contents-of-a-sheet" title="Permalink to this headline">¶</a></h3>
+<p>We&#8217;ve already seen how to iterate over the contents of a worksheet and retrieve the resulting individual cells. However, there are methods to retrieve groups of cells more easily. There are a symmetrical set of methods that retrieve groups of cell information either by row or by column.</p>
+<p>The
+row
+and
+col
+methods return all the
+Cell
+objects for a whole row or column, respectively.</p>
+<p>The
+row_slice
+and
+col_slice
+methods return a list of
+Cell
+objects in a row or column, respectively, bounded by and start index and an optional end index.</p>
+<p>The
+row_types
+and
+col_types
+methods return a list of integers representing the cell types in a row or column, respectively, bounded by and start index and an optional end index.</p>
+<p>The
+row_values
+and
+col_values
+methods return a list of objects representing the cell values in a row or column, respectively, bounded by a start index and an optional end index.</p>
+<p>The following examples demonstrates all of the sheet iteration methods:</p>
+</div>
+<div class="section" id="utility-functions">
+<h3>Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h3>
+<p>When navigating around a workbook, it&#8217;s often useful to be able to convert between row and column indexes and the Excel cell references that users may be used to seeing. The following functions are provided to help with this:</p>
+<p>The
+cellname
+function turns a row and column index into a relative Excel cell reference.</p>
+<p>The
+cellnameabs
+function turns a row and column index into
+an absolute Excel cell reference.</p>
+<p>The
+colname
+function turns a column index into an Excel column name.</p>
+<p>These three functions are demonstrated in the following example:</p>
+</div>
+</div>
+<div class="section" id="unicode">
+<h2>Unicode<a class="headerlink" href="#unicode" title="Permalink to this headline">¶</a></h2>
+<p>All text attributes and values produced by
+xlrd
+will be either unicode objects or, in rare cases, ascii strings.</p>
+<p>Each piece of text in an Excel file written by Microsoft Excel is encoded into one of the following:</p>
+<ul class="simple">
+<li>Latin1, if it fits</li>
+<li>UTF_16_LE, if it doesn&#8217;t fit into Latin1</li>
+<li>In older files, by an encoding specified by an MS codepage. These are mapped to Python encodings by
+xlrd
+and still result in unicode objects.</li>
+</ul>
+<p>In rare cases, other software has been known to write no codepage or the wrong codepage into Excel files. In this case, the correct encoding may need to be specified to
+open_workbook
+:</p>
+</div>
+<div class="section" id="types-of-cell">
+<h2>Types of Cell<a class="headerlink" href="#types-of-cell" title="Permalink to this headline">¶</a></h2>
+<p>We have already seen the cell type expressed as an integer. This integer corresponds to a set of constants in xlrd that identify the type of the cell. The full set of possible cell types is listed in the following sections.</p>
+<div class="section" id="text">
+<h3>Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
+<p>These are represented by the
+xlrd.XL_CELL_TEXT
+constant.</p>
+<p>Cells of this type will have values that are
+unicode
+objects.</p>
+</div>
+<div class="section" id="number">
+<h3>Number<a class="headerlink" href="#number" title="Permalink to this headline">¶</a></h3>
+<p>These are represented by the
+xlrd.XL_CELL_NUMBER
+constant.</p>
+<p>Cells of this type will have values that are
+float
+objects.</p>
+</div>
+<div class="section" id="date">
+<h3>Date<a class="headerlink" href="#date" title="Permalink to this headline">¶</a></h3>
+<p>These are represented by the
+xlrd.XL_CELL_DATE
+constant.</p>
+<p>NB:
+Dates don&#8217;t really exist in Excel files, they are merely Numbers with a particular number formatting.</p>
+<p>xlrd
+will return
+xlrd.XL_CELL_DATE
+as the cell type if the number format string looks like a date.</p>
+<p>The
+xldate_as_tuple
+method is provided for turning the
+float
+in a Date cell into a tuple suitable for instantiating various date/time objects. This example shows how to use it:</p>
+<p>Caveats:</p>
+<ul class="simple">
+<li>Excel files have two possible date modes, one for files originally created on Windows and one for files originally created on an Apple machine. This is expressed as the
+datemode
+attribute of
+xlrd.Book
+objects and
+must
+be passed to xldate_as_tuple.</li>
+<li>The Excel file format has various problems with dates before 3 Jan 1904 that can cause date ambiguities that can result in
+xldate_as_tuple
+raising an XLDateError.</li>
+<li>The Excel
+formula function
+DATE()
+can return unexpected dates in certain circumstances.</li>
+</ul>
+</div>
+<div class="section" id="boolean">
+<h3>Boolean<a class="headerlink" href="#boolean" title="Permalink to this headline">¶</a></h3>
+<p>These are represented by the
+xlrd.XL_CELL_BOOLEAN
+constant.</p>
+<p>Cells of this type will have values that are
+bool
+objects.</p>
+</div>
+<div class="section" id="error">
+<h3>Error<a class="headerlink" href="#error" title="Permalink to this headline">¶</a></h3>
+<p>These are represented by the
+xlrd.XL_CELL_ERROR
+constant.</p>
+<p>Cells of this type will have values that are integers representing specific error codes.</p>
+<p>The
+error_text_from_code
+dictionary can be used to turn error codes into error messages:</p>
+<p>For a simpler way of sensibly displaying all cell types, see
+xlutils.display
+.</p>
+</div>
+<div class="section" id="empty-blank">
+<h3>Empty / Blank<a class="headerlink" href="#empty-blank" title="Permalink to this headline">¶</a></h3>
+<p>Excel files only store cells that either have information in them or have formatting applied to them. However,
+xlrd
+presents sheets as rectangular grids of cells.</p>
+<p>Cells where no information is present in the Excel file are represented by the
+xlrd.XL_CELL_EMPTY
+constant. In addition, there is only one “empty cell”, whose value is an empty string, used by
+xlrd
+, so empty cells may be checked using a Python identity check.</p>
+<p>Cells where only formatting information is present in the Excel file are represented by the
+xlrd.XL_CELL_BLANK
+constant and their value will always be an empty string.</p>
+<p>The following example brings all of the above cell types together and shows examples of their use:</p>
+</div>
+</div>
+<div class="section" id="names">
+<h2>Names<a class="headerlink" href="#names" title="Permalink to this headline">¶</a></h2>
+<p>These are an infrequently used but powerful way of abstracting commonly used information found within Excel files.</p>
+<p>They have many uses, and
+xlrd
+can extract information from many of them. A notable exception are names that refer to sheet and VBA macros, which are extracted but should be ignored.</p>
+<p>Names are created in Excel by navigating to
+Insert &gt; Name &gt; Define
+. If you plan to use
+xlrd
+to extract information from Names, familiarity with the definition and use of names in your chosen spreadsheet application is a good idea.</p>
+<div class="section" id="types">
+<h3>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h3>
+<p>A Name can refer to:</p>
+<ul class="simple">
+<li>A constant<ul>
+<li>CurrentInterestRate = 0.015</li>
+<li>NameOfPHB = “Attila T. Hun”</li>
+</ul>
+</li>
+<li>An absolute (i.e. not relative) cell reference<ul>
+<li>CurrentInterestRate = Sheet1!$B$4</li>
+</ul>
+</li>
+<li>Absolute reference to a 1D, 2D, or 3D block of cells<ul>
+<li>MonthlySalesByRegion = Sheet2:Sheet5!$A$2:$M$100</li>
+</ul>
+</li>
+<li>A list of absolute references<ul>
+<li>Print
+_Titles =
+[row_header_ref, col_header_ref])</li>
+</ul>
+</li>
+</ul>
+<p>Constants can be extracted.</p>
+<p>The coordinates of an absolute
+reference can be extracted so that you can then extract the corresponding data from the relevant sheet(s).</p>
+<p>A relative reference is useful only if you have external knowledge of what cells can be used as the origin. Many formulas found in Excel files include function calls and multiple references and are not useful, and can be too hard to evaluate.</p>
+<p>A full calculation engine is not included in xlrd.</p>
+</div>
+<div class="section" id="scope">
+<h3>Scope<a class="headerlink" href="#scope" title="Permalink to this headline">¶</a></h3>
+<p>The scope of a Name can be global, or it may be specific to a particular sheet. A Name&#8217;s identifier may be re-used in different scopes. When there are multiple Names with the same identifier, the most appropriate one is used based on scope. A good example of this is the built-in name Print_Area; each worksheet may have one of these.</p>
+<p>Examples:</p>
+<p>name=rate, scope=Sheet1, formula=0.015</p>
+<p>name=rate, scope=Sheet2, formula=0.023</p>
+<p>name=rate, scope=
+<em>global</em>
+, formula=0.040</p>
+<p>A cell formula
+(1+rate)^20
+is equivalent to
+1.015^20
+if it appears in
+Sheet1
+but equivalent to
+1.023^20
+if it appears in
+Sheet2
+, and
+1.040^20
+if it appears in any other sheet.</p>
+</div>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<p>Common reasons for using names include:</p>
+<ul class="simple">
+<li>Assigning textual names to values that may occur in many places within a workbook<ul>
+<li>eg:
+RATE = 0.015</li>
+</ul>
+</li>
+<li>Assigning textual names to complex formulae that may be easily mis-copied<ul>
+<li>eg:
+SALES_RESULTS = $A$10:$M$999</li>
+</ul>
+</li>
+</ul>
+<p>Here&#8217;s an example real-world use case: reporting to head office. A company&#8217;s head office makes up a template workbook. Each department gets a copy to fill in. The various ranges of data to be provided all have defined names. When the files come back, a script is used to
+validate that the department hasn&#8217;t trashed the workbook and the names are used to extract the data for further processing. Using names decouples any artistic repositioning of the ranges, by either head office template-designing user or by departmental users who are filling in the template, from the script which only has to know what the names of the ranges are.</p>
+<p>In the examples directory of the
+xlrd
+distribution you will find
+namesdemo.xls
+which has examples of most of the non-macro varieties of defined names. There is also
+xlrdnamesAPIdemo.py
+which shows how to use the name lookup dictionaries, and how to extract constants and references and the data that references point to.</p>
+</div>
+</div>
+<div class="section" id="formatting">
+<h2>Formatting<a class="headerlink" href="#formatting" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;ve already seen that
+open_workbook
+has a parameter to load formatting information from Excel files. When this is done, all the formatting information is available, but the details of how it is presented are beyond the scope of this tutorial.</p>
+<p>If you wish to copy existing formatted data to a new Excel file, see
+xlutils.copy
+and
+xlutils.filter
+.</p>
+<p>If you do wish to inspect formatting information, you&#8217;ll need to consult the following attributes of the following classes:</p>
+<div class="section" id="xlrd-book">
+<h3>xlrd.Book<a class="headerlink" href="#xlrd-book" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="xlrd-sheet-sheet">
+<h3>xlrd.sheet.Sheet<a class="headerlink" href="#xlrd-sheet-sheet" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="xlrd-sheet-cell">
+<h3>xlrd.sheet.Cell<a class="headerlink" href="#xlrd-sheet-cell" title="Permalink to this headline">¶</a></h3>
+<p>xf_index</p>
+</div>
+<div class="section" id="other-classes">
+<h3>Other Classes<a class="headerlink" href="#other-classes" title="Permalink to this headline">¶</a></h3>
+<p>In addition, the following classes are solely used to represent formatting information:</p>
+</div>
+</div>
+<div class="section" id="working-with-large-excel-files">
+<h2>Working with large Excel files<a class="headerlink" href="#working-with-large-excel-files" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re working with particularly large Excel files then there are two features of xlrd that you should be aware of:</p>
+<ul class="simple">
+<li>The on_demand parameter can be passed as True to open_workbook resulting in worksheets only being loaded into memory when they are requested.</li>
+<li>xlrd.Book objects have an unload_sheet method that will unload worksheet, specified by either sheet index or sheet name, from memory.</li>
+</ul>
+<p>The following example shows how a large workbook could be iterated over when only sheets matching a certain pattern need to be inspected, and where only one of those sheets ends up in memory at any one time:</p>
+</div>
+<div class="section" id="introspecting-excel-files-with-runxlrd-py">
+<h2>Introspecting Excel files with runxlrd.py<a class="headerlink" href="#introspecting-excel-files-with-runxlrd-py" title="Permalink to this headline">¶</a></h2>
+<p>The xlrd source distribution includes a
+runxlrd.py
+script that is extremely useful for introspecting Excel files without writing a single line of Python.</p>
+<p>You are encouraged to run a variety of the commands it provides over the Excel files provided in the course materials.</p>
+<p>The following gives an overview of what&#8217;s available from
+runxlrd
+, and can be obtained using
+python runxlrd.py –-help
+:</p>
+<p>runxlrd.py [options] command [input-file-patterns]</p>
+<p>Commands:</p>
+<p>2rows
+Print the contents of first and last row in each sheet</p>
+<p>3rows
+Print the contents of first, second and last row in each sheet</p>
+<p>bench
+Same as &#8220;show&#8221;, but doesn&#8217;t print &#8211; for profiling</p>
+<p>biff_count[1]
+Print a count of each type of BIFF record in the file</p>
+<p>biff_dump[1]
+Print a dump (char and hex) of the BIFF records in the file</p>
+<p>fonts
+hdr + print a dump of all font objects</p>
+<p>hdr
+Mini-overview of file (no per-sheet information)</p>
+<p>hotshot
+Do a hotshot profile run e.g. ... -f1 hotshot bench bigfile*.xls</p>
+<p>labels
+Dump of sheet.col_label_ranges and ...row... for each sheet</p>
+<p>name_dump
+Dump of each object in book.name_obj_list</p>
+<p>names
+Print brief information for each NAME record</p>
+<p>ov
+Overview of file</p>
+<p>profile
+Like &#8220;hotshot&#8221;, but uses cProfile</p>
+<p>show
+Print the contents of all rows in each sheet</p>
+<p>version[0]
+Print versions of xlrd and Python and exit</p>
+<p>xfc
+Print &#8220;XF counts&#8221; and cell-type counts &#8211; see code for details</p>
+<p>[0] means no file arg</p>
+<p>[1] means only one file arg i.e. no glob.glob pattern</p>
+<p>Options:</p>
+<p>-h, &#8211;help
+show this help message and exit</p>
+<p>-l LOGFILENAME, &#8211;logfilename=LOGFILENAME</p>
+<p>contains error messages</p>
+<p>-v VERBOSITY, &#8211;verbosity=VERBOSITY</p>
+<p>level of information and diagnostics provided</p>
+<p>-p PICKLEABLE, &#8211;pickleable=PICKLEABLE</p>
+<p>1: ensure Book object is pickleable (default); 0:</p>
+<p>don&#8217;t bother</p>
+<p>-m MMAP, &#8211;mmap=MMAP
+1: use mmap; 0: don&#8217;t use mmap; -1: accept heuristic</p>
+<p>-e ENCODING, &#8211;encoding=ENCODING</p>
+<p>encoding override</p>
+<p>-f FORMATTING, &#8211;formatting=FORMATTING</p>
+<p>0 (default): no fmt info 1: fmt info (all cells)</p>
+<p>-g GC, &#8211;gc=GC
+0: auto gc enabled; 1: auto gc disabled, manual</p>
+<p>collect after each file; 2: no gc</p>
+<p>-s ONESHEET, &#8211;onesheet=ONESHEET</p>
+<p>restrict output to this sheet (name or index)</p>
+<p>-u, &#8211;unnumbered
+omit line numbers or offsets in biff_dump</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Reading Excel Files</a><ul>
+<li><a class="reference internal" href="#opening-workbooks">Opening Workbooks</a></li>
+<li><a class="reference internal" href="#navigating-a-workbook">Navigating a Workbook</a><ul>
+<li><a class="reference internal" href="#introspecting-a-book">Introspecting a Book</a></li>
+<li><a class="reference internal" href="#introspecting-a-sheet">Introspecting a Sheet</a></li>
+<li><a class="reference internal" href="#getting-a-particular-cell">Getting a particular Cell</a></li>
+<li><a class="reference internal" href="#iterating-over-the-contents-of-a-sheet">Iterating over the contents of a Sheet</a></li>
+<li><a class="reference internal" href="#utility-functions">Utility Functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unicode">Unicode</a></li>
+<li><a class="reference internal" href="#types-of-cell">Types of Cell</a><ul>
+<li><a class="reference internal" href="#text">Text</a></li>
+<li><a class="reference internal" href="#number">Number</a></li>
+<li><a class="reference internal" href="#date">Date</a></li>
+<li><a class="reference internal" href="#boolean">Boolean</a></li>
+<li><a class="reference internal" href="#error">Error</a></li>
+<li><a class="reference internal" href="#empty-blank">Empty / Blank</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#names">Names</a><ul>
+<li><a class="reference internal" href="#types">Types</a></li>
+<li><a class="reference internal" href="#scope">Scope</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#formatting">Formatting</a><ul>
+<li><a class="reference internal" href="#xlrd-book">xlrd.Book</a></li>
+<li><a class="reference internal" href="#xlrd-sheet-sheet">xlrd.sheet.Sheet</a></li>
+<li><a class="reference internal" href="#xlrd-sheet-cell">xlrd.sheet.Cell</a></li>
+<li><a class="reference internal" href="#other-classes">Other Classes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#working-with-large-excel-files">Working with large Excel files</a></li>
+<li><a class="reference internal" href="#introspecting-excel-files-with-runxlrd-py">Introspecting Excel files with runxlrd.py</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/rst_notes/ReadingExcelFiles.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Tutorial 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Landon Jurgens, Chris Withers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
