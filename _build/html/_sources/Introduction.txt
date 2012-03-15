@@ -1,84 +1,61 @@
 Introduction
 ============
 
+Libraries
+---------
+
 This tutorial covers the following libraries:
 
 xlrd
 ~~~~
 
-* 
+* `Download the xlrd library <http://pypi.python.org/pypi/xlrd>`_ 
 
-* reading data and formatting from .xls files
+* Reading data and formatting from .xls files
 
+* Version 0.7.1
 
-* this tutorial covers version 0.7.1
-
-
-* API documentation can be found at:
-
-  * 
-
+* `API documentation <https://secure.simplistix.co.uk/svn/xlrd/trunk/xlrd/doc/xlrd.html>`_
 
 xlwt
 ~~~~
 
-* 
+* `Download the xlwt library <http://pypi.python.org/pypi/xlwt>`_
 
-* writing data and formatting to .xls files
+* Writing data and formatting to .xls files
 
+* Version 0.7.2
 
-* this tutorial covers version 0.7.2
+* `Incomplete API documentation <https://secure.simplistix.co.uk/svn/xlwt/trunk/xlwt/doc/xlwt.html>`_
 
-
-* incomplete API documentation can be found at:
-
-  * 
-
-
-* fairly complete examples can be found at
-
-  * 
-
+* `Fairly complete examples <https://secure.simplistix.co.uk/svn/xlwt/trunk/xlwt/examples/>`_
 
 xlutils
 ~~~~~~~
 
-* 
+* `Download the xlutils library <http://pypi.python.org/pypi/xlutils>`_
 
 * a collection of utilities using both xlrd and xlwt:
 
   * copying data from a source to a target spreadsheet
 
-
   * filtering data from a source to a target spreadsheet
 
+* Version 1.3.0 and above.
 
+* `Documentation and examples <https://secure.simplistix.co.uk/svn/xlutils/trunk/xlutils/docs/>`_
 
-* this tutorial covers version 1.3.0 and above.
-
-
-* documentation and examples can be found at:
-
-  * 
-
-
+Reasons
+-------
 
 There are still reasons why automating an Excel instance via COM is necessary:
 
 * manipulation of graphs
 
-
 * rich text cells
-
 
 * reading formulae in cells
 
-
 * working with macros and names
 
-
 * the more esoteric things found in .xls files
-
-
-
-
