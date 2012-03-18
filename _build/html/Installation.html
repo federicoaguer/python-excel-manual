@@ -54,20 +54,20 @@
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>There are several methods of installation available. While the following examples are for
-xlrd
-, the exact same steps can be used for any of the three libraries.</p>
+xlrd, the exact same steps can be used for any of the three libraries.</p>
 <div class="section" id="install-from-source">
 <h2>Install from Source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h2>
 <p>On Linux:</p>
-<p>NB:
-Make sure you use the
-python
-you intend to use for your project.</p>
+<div class="highlight-python"><pre>$ tar xzf xlrd.tgz
+$ cd xlrd-0.7.1
+$ python setup.py install</pre>
+</div>
+<p><strong>NB:</strong> Make sure you use the python you intend to use for your project.</p>
 <p>On Windows, having used WinZip or similar to unpack xlrd-0.7.1.zip:</p>
-<p>NB:
-Make sure you use the
-python
-you intend to use for your project.</p>
+<div class="highlight-python"><pre>C:\&gt; cd xlrd-0.7.1
+C:\xlrd-0.7.1&gt; \Python26\python setup.py install</pre>
+</div>
+<p><strong>NB:</strong> Make sure you use the python you intend to use for your project.</p>
 </div>
 <div class="section" id="install-using-windows-installer">
 <h2>Install using Windows Installer<a class="headerlink" href="#install-using-windows-installer" title="Permalink to this headline">¶</a></h2>
@@ -76,34 +76,48 @@ you intend to use for your project.</p>
 </div>
 <div class="section" id="install-using-easyinstall">
 <h2>Install using EasyInstall<a class="headerlink" href="#install-using-easyinstall" title="Permalink to this headline">¶</a></h2>
-<p>This cross-platform method requires that you already have EasyInstall installed. For more information on this, please see:</p>
-<ul class="simple">
-<li></li>
-</ul>
+<p>This cross-platform method requires that you already have EasyInstall installed. For more information on this, please see <a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall">EasyInstall</a>:</p>
+<div class="highlight-python"><pre>easy_install xlrd</pre>
+</div>
 </div>
 <div class="section" id="installation-using-buildout">
 <h2>Installation using Buildout<a class="headerlink" href="#installation-using-buildout" title="Permalink to this headline">¶</a></h2>
 <p>Buildout provides a cross-platform method of meeting the python package dependencies of a project without interfering with the system Python.</p>
-<p>Having created a directory called
-mybuildout
-, download the following file into it:</p>
-<ul class="simple">
-<li></li>
-</ul>
-<p>Now, create a file in
-mybuildout
-called
-buildout.cfg
-containing the following:</p>
-<p>NB: The versions section is optional</p>
+<p>Having created a directory called <tt class="docutils literal"><span class="pre">mybuildout</span></tt>, download <a class="reference external" href="http://svn.zope.org/*checkout*/zc.buildout/trunk/bootstrap/bootstrap.py">this file</a> into it.</p>
+<p>Now, create a file in <tt class="docutils literal"><span class="pre">mybuildout</span></tt> called <tt class="docutils literal"><span class="pre">buildout.cfg</span></tt> containing the following:</p>
+<div class="highlight-python"><pre>[buildout]
+parts = py
+versions = versions
+
+[versions]
+xlrd=0.7.1
+xlwt=0.7.2
+xlutils=1.3.2
+
+[py]
+recipe = zc.recipe.egg
+eggs =
+  xlrd
+  xlwt
+  xlutils
+interpreter = py
+
+buildout.cfg</pre>
+</div>
+<p><strong>NB:</strong> The versions section is optional.</p>
 <p>Finally, run the following:</p>
+<div class="highlight-python"><pre>$ python bootstrap.py
+$ bin/buildout</pre>
+</div>
 <p>These lines:</p>
 <ul class="simple">
 <li>initialise the buildout environment</li>
 <li>run the buildout. This should be done each time dependencies change.</li>
 </ul>
 <p>Now you can do the following:</p>
-<p>Buildout lives at</p>
+<div class="highlight-python"><pre>$ bin/py your_xlrd_xlwt_xltuils_script.py</pre>
+</div>
+<p>Buildout lives at <a class="reference external" href="http://pypi.python.org/pypi/zc.buildout">Buildout</a>.</p>
 </div>
 </div>
 
