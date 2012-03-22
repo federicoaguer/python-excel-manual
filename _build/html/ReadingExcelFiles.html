@@ -53,453 +53,505 @@
             
   <div class="section" id="reading-excel-files">
 <h1>Reading Excel Files<a class="headerlink" href="#reading-excel-files" title="Permalink to this headline">¶</a></h1>
-<p>All the examples shown below can be found in the
-xlrd
-directory of the course material.</p>
+<p>All the examples shown below can be found in the <tt class="docutils literal"><span class="pre">xlrd</span></tt> directory of the course material.</p>
 <div class="section" id="opening-workbooks">
 <h2>Opening Workbooks<a class="headerlink" href="#opening-workbooks" title="Permalink to this headline">¶</a></h2>
-<p>Workbooks can be loaded either from a file, an
-mmap.mmap
-object or from a string:</p>
+<p>Workbooks can be loaded either from a file, an <tt class="docutils literal"><span class="pre">mmap.mmap</span></tt> object or from a string:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">mmap</span> <span class="kn">import</span> <span class="n">mmap</span><span class="p">,</span><span class="n">ACCESS_READ</span>
+<span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span>
+
+<span class="k">print</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;simple.xls&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;simple.xls&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">open_workbook</span><span class="p">(</span>
+        <span class="n">file_contents</span><span class="o">=</span><span class="n">mmap</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span><span class="mi">0</span><span class="p">,</span><span class="n">access</span><span class="o">=</span><span class="n">ACCESS_READ</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<span class="n">aString</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;simple.xls&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">open_workbook</span><span class="p">(</span><span class="n">file_contents</span><span class="o">=</span><span class="n">aString</span><span class="p">)</span>
+<span class="nb">open</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="navigating-a-workbook">
 <h2>Navigating a Workbook<a class="headerlink" href="#navigating-a-workbook" title="Permalink to this headline">¶</a></h2>
 <p>Here is a simple example of workbook navigation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span>
+
+<span class="n">wb</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;simple.xls&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">wb</span><span class="o">.</span><span class="n">sheets</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">&#39;Sheet:&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">nrows</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ncols</span><span class="p">):</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">print</span>
+<span class="n">simple</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 <p>The next few sections will cover the navigation of workbooks in more detail.</p>
 <div class="section" id="introspecting-a-book">
 <h3>Introspecting a Book<a class="headerlink" href="#introspecting-a-book" title="Permalink to this headline">¶</a></h3>
-<p>The
-xlrd.Book
-object returned by
-open_workbook
-contains all information to do with the workbook and can be used to retrieve individual sheets within the workbook.</p>
-<p>The
-nsheets
-attribute is an integer containing the number of sheets in the workbook. This attribute, in combination with the
-sheet_by_index</p>
-<p>method, is the most common way of retrieving individual sheets.</p>
-<p>The
-sheet_names
-method returns a list of unicodes containing the names of all sheets in the workbook. Individual sheets can be retrieved using these names by way of the
-sheet_by_name
-function.</p>
-<p>The results of the
-sheets
-method can be iterated over to retrieve each of the sheets in the workbook.</p>
+<p>The <tt class="docutils literal"><span class="pre">xlrd.Book</span></tt> object returned by <tt class="docutils literal"><span class="pre">open_workbook</span></tt> contains all information to do with the workbook and can be used to retrieve individual sheets within the workbook.</p>
+<p>The <tt class="docutils literal"><span class="pre">nsheets</span></tt> attribute is an integer containing the number of sheets in the workbook. This attribute, in combination with the <tt class="docutils literal"><span class="pre">sheet_by_index</span></tt> method, is the most common way of retrieving individual sheets.</p>
+<p>The <tt class="docutils literal"><span class="pre">sheet_names</span></tt> method returns a list of unicodes containing the names of all sheets in the workbook. Individual sheets can be retrieved using these names by way of the <tt class="docutils literal"><span class="pre">sheet_by_name</span></tt> function.</p>
+<p>The results of the <tt class="docutils literal"><span class="pre">sheets</span></tt> method can be iterated over to retrieve each of the sheets in the workbook.</p>
 <p>The following example demonstrates these methods and attributes:</p>
-<p>xlrd.Book
-objects have other attributes relating to the content of the workbook that are only rarely useful:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;simple.xls&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">book</span><span class="o">.</span><span class="n">nsheets</span>
+
+<span class="k">for</span> <span class="n">sheet_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">nsheets</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="n">sheet_index</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_names</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">sheet_name</span> <span class="ow">in</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_names</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_name</span><span class="p">(</span><span class="n">sheet_name</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">book</span><span class="o">.</span><span class="n">sheets</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">sheet</span>
+
+<span class="n">introspect_book</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">xlrd.Book</span></tt> objects have other attributes relating to the content of the workbook that are only rarely useful:</p>
 <ul class="simple">
-<li>codepage</li>
-<li>countries</li>
-<li>user_name</li>
+<li><tt class="docutils literal"><span class="pre">codepage</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">countries</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">user_name</span></tt></li>
 </ul>
-<p>If you think you may need to use these attributes, please see the
-xlrd
-documentation.</p>
+<p>If you think you may need to use these attributes, please see the <tt class="docutils literal"><span class="pre">xlrd</span></tt> documentation.</p>
 </div>
 <div class="section" id="introspecting-a-sheet">
 <h3>Introspecting a Sheet<a class="headerlink" href="#introspecting-a-sheet" title="Permalink to this headline">¶</a></h3>
-<p>The
-xlrd.sheet.Sheet
-objects returned by any of the methods described above contain all the information to do with a worksheet and its contents.</p>
-<p>The
-name
-attribute is a unicode representing the name of the worksheet.</p>
-<p>The
-nrows
-and
-ncols
-attributes contain the number of rows and the number of columns, respectively, in the worksheet.</p>
+<p>The <tt class="docutils literal"><span class="pre">xlrd.sheet.Sheet</span></tt> objects returned by any of the methods described above contain all the information to do with a worksheet and its contents.</p>
+<p>The <tt class="docutils literal"><span class="pre">name</span></tt> attribute is a unicode representing the name of the worksheet.</p>
+<p>The <tt class="docutils literal"><span class="pre">nrows</span></tt> and <tt class="docutils literal"><span class="pre">ncols</span></tt> attributes contain the number of rows and the number of columns, respectively, in the worksheet.</p>
 <p>The following example shows how these can be used to iterate over and display the contents of one worksheet:</p>
-<p>xlrd.sheet.Sheet
-objects have other attributes relating to the content of the worksheet that are only rarely useful:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span><span class="p">,</span><span class="n">cellname</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;odd.xls&#39;</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">sheet</span><span class="o">.</span><span class="n">name</span>
+
+<span class="k">print</span> <span class="n">sheet</span><span class="o">.</span><span class="n">nrows</span>
+<span class="k">print</span> <span class="n">sheet</span><span class="o">.</span><span class="n">ncols</span>
+
+<span class="k">for</span> <span class="n">row_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">nrows</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">ncols</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">cellname</span><span class="p">(</span><span class="n">row_index</span><span class="p">,</span><span class="n">col_index</span><span class="p">),</span><span class="s">&#39;-&#39;</span><span class="p">,</span>
+        <span class="k">print</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">row_index</span><span class="p">,</span><span class="n">col_index</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+<span class="n">introspect_sheet</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">xlrd.sheet.Sheet</span></tt> objects have other attributes relating to the content of the worksheet that are only rarely useful:</p>
 <ul class="simple">
-<li>col_label_ranges</li>
-<li>row_label_ranges</li>
-<li>visibility</li>
+<li><tt class="docutils literal"><span class="pre">col_label_ranges</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">row_label_ranges</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">visibility</span></tt></li>
 </ul>
-<p>If you think you may need to use these attributes, please see the
-xlrd
-documentation.</p>
+<p>If you think you may need to use these attributes, please see the <tt class="docutils literal"><span class="pre">xlrd</span></tt> documentation.</p>
 </div>
 <div class="section" id="getting-a-particular-cell">
 <h3>Getting a particular Cell<a class="headerlink" href="#getting-a-particular-cell" title="Permalink to this headline">¶</a></h3>
-<p>As already seen in previous examples, the
-cell
-method of a
-Sheet
-object can be used to return the contents of a particular cell.</p>
-<p>The
-cell
-method returns an
-xlrd.sheet.Cell
-object. These objects have very few attributes, of which
-value
-contains the actual value of the cell and
-ctype
-contains the type of the cell.</p>
-<p>In addition,
-Sheet
-objects have two methods for returning these two types of data. The
-cell_value
-method returns the value for a particular cell, while the
-cell_type
-method returns the type of a particular cell. These methods can be quicker to execute than retrieving the
-Cell
-object.</p>
+<p>As already seen in previous examples, the <tt class="docutils literal"><span class="pre">cell</span></tt> method of a <tt class="docutils literal"><span class="pre">Sheet</span></tt> object can be used to return the contents of a particular cell.</p>
+<p>The <tt class="docutils literal"><span class="pre">cell</span></tt> method returns an <tt class="docutils literal"><span class="pre">xlrd.sheet.Cell</span></tt> object. These objects have very few attributes, of which <tt class="docutils literal"><span class="pre">value</span></tt> contains the actual value of the cell and <tt class="docutils literal"><span class="pre">ctype</span></tt> contains the type of the cell.</p>
+<p>In addition, <tt class="docutils literal"><span class="pre">Sheet</span></tt> objects have two methods for returning these two types of data. The <tt class="docutils literal"><span class="pre">cell_value</span></tt> method returns the value for a particular cell, while the <tt class="docutils literal"><span class="pre">cell_type</span></tt> method returns the type of a particular cell. These methods can be quicker to execute than retrieving the <tt class="docutils literal"><span class="pre">Cell</span></tt> object.</p>
 <p>Cell types are covered in more detail later. The following example shows the methods, attributes and classes in action:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span><span class="p">,</span><span class="n">XL_CELL_TEXT</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;odd.xls&#39;</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">cell</span> <span class="o">=</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">cell</span>
+<span class="k">print</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span>
+<span class="k">print</span> <span class="n">cell</span><span class="o">.</span><span class="n">ctype</span><span class="o">==</span><span class="n">XL_CELL_TEXT</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">ncols</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell_type</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">),</span><span class="n">sheet</span><span class="o">.</span><span class="n">cell_value</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+<span class="n">cell_access</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="iterating-over-the-contents-of-a-sheet">
 <h3>Iterating over the contents of a Sheet<a class="headerlink" href="#iterating-over-the-contents-of-a-sheet" title="Permalink to this headline">¶</a></h3>
 <p>We&#8217;ve already seen how to iterate over the contents of a worksheet and retrieve the resulting individual cells. However, there are methods to retrieve groups of cells more easily. There are a symmetrical set of methods that retrieve groups of cell information either by row or by column.</p>
-<p>The
-row
-and
-col
-methods return all the
-Cell
-objects for a whole row or column, respectively.</p>
-<p>The
-row_slice
-and
-col_slice
-methods return a list of
-Cell
-objects in a row or column, respectively, bounded by and start index and an optional end index.</p>
-<p>The
-row_types
-and
-col_types
-methods return a list of integers representing the cell types in a row or column, respectively, bounded by and start index and an optional end index.</p>
-<p>The
-row_values
-and
-col_values
-methods return a list of objects representing the cell values in a row or column, respectively, bounded by a start index and an optional end index.</p>
+<p>The <tt class="docutils literal"><span class="pre">row</span></tt> and <tt class="docutils literal"><span class="pre">col</span></tt> methods return all the <tt class="docutils literal"><span class="pre">Cell</span></tt> objects for a whole row or column, respectively.</p>
+<p>The <tt class="docutils literal"><span class="pre">row_slice</span></tt> and <tt class="docutils literal"><span class="pre">col_slice</span></tt> methods return a list of <tt class="docutils literal"><span class="pre">Cell</span></tt> objects in a row or column, respectively, bounded by and start index and an optional end index.</p>
+<p>The <tt class="docutils literal"><span class="pre">row_types</span></tt> and <tt class="docutils literal"><span class="pre">col_types</span></tt> methods return a list of integers representing the cell types in a row or column, respectively, bounded by and start index and an optional end index.</p>
+<p>The <tt class="docutils literal"><span class="pre">row_values</span></tt> and <tt class="docutils literal"><span class="pre">col_values</span></tt> methods return a list of objects representing the cell values in a row or column, respectively, bounded by a start index and an optional end index.</p>
 <p>The following examples demonstrates all of the sheet iteration methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;odd.xls&#39;</span><span class="p">)</span>
+<span class="n">sheet0</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sheet1</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">print</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">row_slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">row_slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">row_values</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">row_values</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">row_types</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">row_types</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span>
+<span class="k">print</span> <span class="n">sheet1</span><span class="o">.</span><span class="n">col_slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">col_slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet1</span><span class="o">.</span><span class="n">col_values</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">col_values</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet1</span><span class="o">.</span><span class="n">col_types</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">sheet0</span><span class="o">.</span><span class="n">col_types</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">sheet_iteration</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="utility-functions">
 <h3>Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h3>
 <p>When navigating around a workbook, it&#8217;s often useful to be able to convert between row and column indexes and the Excel cell references that users may be used to seeing. The following functions are provided to help with this:</p>
-<p>The
-cellname
-function turns a row and column index into a relative Excel cell reference.</p>
-<p>The
-cellnameabs
-function turns a row and column index into
+<p>The <tt class="docutils literal"><span class="pre">cellname</span></tt> function turns a row and column index into a relative Excel cell reference.</p>
+<p>The <tt class="docutils literal"><span class="pre">cellnameabs</span></tt> function turns a row and column index into
 an absolute Excel cell reference.</p>
-<p>The
-colname
-function turns a column index into an Excel column name.</p>
+<p>The <tt class="docutils literal"><span class="pre">colname</span></tt> function turns a column index into an Excel column name.</p>
 <p>These three functions are demonstrated in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">cellname</span><span class="p">,</span> <span class="n">cellnameabs</span><span class="p">,</span> <span class="n">colname</span>
+
+<span class="k">print</span> <span class="n">cellname</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">cellname</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">cellname</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">cellnameabs</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">cellnameabs</span><span class="p">(</span><span class="mi">41</span><span class="p">,</span><span class="mi">59</span><span class="p">),</span><span class="n">cellnameabs</span><span class="p">(</span><span class="mi">265</span><span class="p">,</span><span class="mi">358</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">colname</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">colname</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="n">colname</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">utility</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="unicode">
 <h2>Unicode<a class="headerlink" href="#unicode" title="Permalink to this headline">¶</a></h2>
-<p>All text attributes and values produced by
-xlrd
-will be either unicode objects or, in rare cases, ascii strings.</p>
+<p>All text attributes and values produced by <tt class="docutils literal"><span class="pre">xlrd</span></tt> will be either unicode objects or, in rare cases, ascii strings.</p>
 <p>Each piece of text in an Excel file written by Microsoft Excel is encoded into one of the following:</p>
 <ul class="simple">
 <li>Latin1, if it fits</li>
 <li>UTF_16_LE, if it doesn&#8217;t fit into Latin1</li>
-<li>In older files, by an encoding specified by an MS codepage. These are mapped to Python encodings by
-xlrd
-and still result in unicode objects.</li>
+<li>In older files, by an encoding specified by an MS codepage. These are mapped to Python encodings by <tt class="docutils literal"><span class="pre">xlrd</span></tt> and still result in unicode objects.</li>
 </ul>
-<p>In rare cases, other software has been known to write no codepage or the wrong codepage into Excel files. In this case, the correct encoding may need to be specified to
-open_workbook
-:</p>
+<p>In rare cases, other software has been known to write no codepage or the wrong codepage into Excel files. In this case, the correct encoding may need to be specified to <tt class="docutils literal"><span class="pre">open_workbook</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span>
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;dodgy.xls&#39;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s">&#39;cp1252&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="types-of-cell">
 <h2>Types of Cell<a class="headerlink" href="#types-of-cell" title="Permalink to this headline">¶</a></h2>
 <p>We have already seen the cell type expressed as an integer. This integer corresponds to a set of constants in xlrd that identify the type of the cell. The full set of possible cell types is listed in the following sections.</p>
 <div class="section" id="text">
 <h3>Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
-<p>These are represented by the
-xlrd.XL_CELL_TEXT
-constant.</p>
-<p>Cells of this type will have values that are
-unicode
-objects.</p>
+<p>These are represented by the <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_TEXT</span></tt> constant.</p>
+<p>Cells of this type will have values that are <tt class="docutils literal"><span class="pre">unicode</span></tt> objects.</p>
 </div>
 <div class="section" id="number">
 <h3>Number<a class="headerlink" href="#number" title="Permalink to this headline">¶</a></h3>
-<p>These are represented by the
-xlrd.XL_CELL_NUMBER
-constant.</p>
-<p>Cells of this type will have values that are
-float
-objects.</p>
+<p>These are represented by the <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_NUMBER</span></tt> constant.</p>
+<p>Cells of this type will have values that are <tt class="docutils literal"><span class="pre">float</span></tt> objects.</p>
 </div>
 <div class="section" id="date">
 <h3>Date<a class="headerlink" href="#date" title="Permalink to this headline">¶</a></h3>
-<p>These are represented by the
-xlrd.XL_CELL_DATE
-constant.</p>
-<p>NB:
-Dates don&#8217;t really exist in Excel files, they are merely Numbers with a particular number formatting.</p>
-<p>xlrd
-will return
-xlrd.XL_CELL_DATE
-as the cell type if the number format string looks like a date.</p>
-<p>The
-xldate_as_tuple
-method is provided for turning the
-float
-in a Date cell into a tuple suitable for instantiating various date/time objects. This example shows how to use it:</p>
+<p>These are represented by the <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_DATE</span></tt> constant.</p>
+<p><strong>NB:</strong> Dates don&#8217;t really exist in Excel files, they are merely Numbers with a particular number formatting.</p>
+<p><tt class="docutils literal"><span class="pre">xlrd</span></tt> will return <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_DATE</span></tt> as the cell type if the number format string looks like a date.</p>
+<p>The <tt class="docutils literal"><span class="pre">xldate_as_tuple</span></tt> method is provided for turning the <tt class="docutils literal"><span class="pre">float</span></tt> in a Date cell into a tuple suitable for instantiating various date/time objects. This example shows how to use it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span><span class="n">datetime</span><span class="p">,</span><span class="n">time</span>
+<span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span><span class="p">,</span><span class="n">xldate_as_tuple</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;types.xls&#39;</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">date_value</span> <span class="o">=</span> <span class="n">xldate_as_tuple</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">book</span><span class="o">.</span><span class="n">datemode</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">datetime</span><span class="p">(</span><span class="o">*</span><span class="n">date_value</span><span class="p">),</span><span class="n">date</span><span class="p">(</span><span class="o">*</span><span class="n">date_value</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">datetime_value</span> <span class="o">=</span> <span class="n">xldate_as_tuple</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">book</span><span class="o">.</span><span class="n">datemode</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">datetime</span><span class="p">(</span><span class="o">*</span><span class="n">datetime_value</span><span class="p">)</span>
+<span class="n">time_value</span> <span class="o">=</span> <span class="n">xldate_as_tuple</span><span class="p">(</span><span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">book</span><span class="o">.</span><span class="n">datemode</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">time</span><span class="p">(</span><span class="o">*</span><span class="n">time_value</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+<span class="k">print</span> <span class="n">datetime</span><span class="p">(</span><span class="o">*</span><span class="n">time_value</span><span class="p">)</span>
+<span class="n">dates</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 <p>Caveats:</p>
 <ul class="simple">
-<li>Excel files have two possible date modes, one for files originally created on Windows and one for files originally created on an Apple machine. This is expressed as the
-datemode
-attribute of
-xlrd.Book
-objects and
-must
-be passed to xldate_as_tuple.</li>
-<li>The Excel file format has various problems with dates before 3 Jan 1904 that can cause date ambiguities that can result in
-xldate_as_tuple
-raising an XLDateError.</li>
-<li>The Excel
-formula function
-DATE()
-can return unexpected dates in certain circumstances.</li>
+<li>Excel files have two possible date modes, one for files originally created on Windows and one for files originally created on an Apple machine. This is expressed as the <tt class="docutils literal"><span class="pre">datemode</span></tt> attribute of <tt class="docutils literal"><span class="pre">xlrd.Book</span></tt> objects and <strong>must</strong> be passed to <tt class="docutils literal"><span class="pre">xldate_as_tuple</span></tt>.</li>
+<li>The Excel file format has various problems with dates before 3 Jan 1904 that can cause date ambiguities that can result in <tt class="docutils literal"><span class="pre">xldate_as_tuple</span></tt> raising an XLDateError.</li>
+<li>The Excel formula function <tt class="docutils literal"><span class="pre">DATE()</span></tt> can return unexpected dates in certain circumstances.</li>
 </ul>
 </div>
 <div class="section" id="boolean">
 <h3>Boolean<a class="headerlink" href="#boolean" title="Permalink to this headline">¶</a></h3>
-<p>These are represented by the
-xlrd.XL_CELL_BOOLEAN
-constant.</p>
-<p>Cells of this type will have values that are
-bool
-objects.</p>
+<p>These are represented by the <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_BOOLEAN</span></tt> constant.</p>
+<p>Cells of this type will have values that are <tt class="docutils literal"><span class="pre">bool</span></tt> objects.</p>
 </div>
 <div class="section" id="error">
 <h3>Error<a class="headerlink" href="#error" title="Permalink to this headline">¶</a></h3>
-<p>These are represented by the
-xlrd.XL_CELL_ERROR
-constant.</p>
+<p>These are represented by the <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_ERROR</span></tt> constant.</p>
 <p>Cells of this type will have values that are integers representing specific error codes.</p>
-<p>The
-error_text_from_code
-dictionary can be used to turn error codes into error messages:</p>
-<p>For a simpler way of sensibly displaying all cell types, see
-xlutils.display
-.</p>
+<p>The <tt class="docutils literal"><span class="pre">error_text_from_code</span></tt> dictionary can be used to turn error codes into error messages:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span><span class="p">,</span><span class="n">error_text_from_code</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;types.xls&#39;</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">error_text_from_code</span><span class="p">[</span><span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">error_text_from_code</span><span class="p">[</span><span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+<span class="n">errors</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>For a simpler way of sensibly displaying all cell types, see <tt class="docutils literal"><span class="pre">xlutils.display</span></tt>.</p>
 </div>
 <div class="section" id="empty-blank">
 <h3>Empty / Blank<a class="headerlink" href="#empty-blank" title="Permalink to this headline">¶</a></h3>
-<p>Excel files only store cells that either have information in them or have formatting applied to them. However,
-xlrd
-presents sheets as rectangular grids of cells.</p>
-<p>Cells where no information is present in the Excel file are represented by the
-xlrd.XL_CELL_EMPTY
-constant. In addition, there is only one “empty cell”, whose value is an empty string, used by
-xlrd
-, so empty cells may be checked using a Python identity check.</p>
-<p>Cells where only formatting information is present in the Excel file are represented by the
-xlrd.XL_CELL_BLANK
-constant and their value will always be an empty string.</p>
+<p>Excel files only store cells that either have information in them or have formatting applied to them. However, <tt class="docutils literal"><span class="pre">xlrd</span></tt> presents sheets as rectangular grids of cells.</p>
+<p>Cells where no information is present in the Excel file are represented by the <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_EMPTY</span></tt> constant. In addition, there is only one “empty cell”, whose value is an empty string, used by <tt class="docutils literal"><span class="pre">xlrd</span></tt>, so empty cells may be checked using a Python identity check.</p>
+<p>Cells where only formatting information is present in the Excel file are represented by the <tt class="docutils literal"><span class="pre">xlrd.XL_CELL_BLANK</span></tt> constant and their value will always be an empty string.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span><span class="p">,</span><span class="n">empty_cell</span>
+
+<span class="k">print</span> <span class="n">empty_cell</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;types.xls&#39;</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">empty</span> <span class="o">=</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">blank</span> <span class="o">=</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">empty</span> <span class="ow">is</span> <span class="n">blank</span><span class="p">,</span> <span class="n">empty</span> <span class="ow">is</span> <span class="n">empty_cell</span><span class="p">,</span> <span class="n">blank</span> <span class="ow">is</span> <span class="n">empty_cell</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;types.xls&#39;</span><span class="p">,</span><span class="n">formatting_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">empty</span> <span class="o">=</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">blank</span> <span class="o">=</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">empty</span><span class="o">.</span><span class="n">ctype</span><span class="p">,</span><span class="nb">repr</span><span class="p">(</span><span class="n">empty</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">blank</span><span class="o">.</span><span class="n">ctype</span><span class="p">,</span><span class="nb">repr</span><span class="p">(</span><span class="n">blank</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+<span class="n">emptyblank</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 <p>The following example brings all of the above cell types together and shows examples of their use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span>
+
+<span class="k">def</span> <span class="nf">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="n">row_x</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">col_x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">sheet</span><span class="o">.</span><span class="n">ncols</span><span class="p">):</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">row_x</span><span class="p">,</span><span class="n">col_x</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">cell</span><span class="o">.</span><span class="n">ctype</span><span class="p">,</span><span class="n">cell</span><span class="p">,</span><span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;types.xls&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&#39;XL_CELL_TEXT&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_NUMBER&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_DATE&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_BOOLEAN&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_ERROR&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_BLANK&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_EMPTY&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="k">print</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span>
+            <span class="s">&#39;types.xls&#39;</span><span class="p">,</span><span class="n">formatting_info</span><span class="o">=</span><span class="bp">True</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">sheet_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&#39;XL_CELL_TEXT&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_NUMBER&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_DATE&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_BOOLEAN&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_ERROR&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_BLANK&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;XL_CELL_EMPTY&#39;</span><span class="p">,</span><span class="n">cell_contents</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="n">cell_types</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="names">
 <h2>Names<a class="headerlink" href="#names" title="Permalink to this headline">¶</a></h2>
 <p>These are an infrequently used but powerful way of abstracting commonly used information found within Excel files.</p>
-<p>They have many uses, and
-xlrd
-can extract information from many of them. A notable exception are names that refer to sheet and VBA macros, which are extracted but should be ignored.</p>
-<p>Names are created in Excel by navigating to
-Insert &gt; Name &gt; Define
-. If you plan to use
-xlrd
-to extract information from Names, familiarity with the definition and use of names in your chosen spreadsheet application is a good idea.</p>
+<p>They have many uses, and <tt class="docutils literal"><span class="pre">xlrd</span></tt> can extract information from many of them. A notable exception are names that refer to sheet and VBA macros, which are extracted but should be ignored.</p>
+<p>Names are created in Excel by navigating to <tt class="docutils literal"><span class="pre">Insert</span> <span class="pre">&gt;</span> <span class="pre">Name</span> <span class="pre">&gt;</span> <span class="pre">Define</span></tt>. If you plan to use <tt class="docutils literal"><span class="pre">xlrd</span></tt> to extract information from Names, familiarity with the definition and use of names in your chosen spreadsheet application is a good idea.</p>
 <div class="section" id="types">
 <h3>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h3>
 <p>A Name can refer to:</p>
 <ul class="simple">
 <li>A constant<ul>
-<li>CurrentInterestRate = 0.015</li>
-<li>NameOfPHB = “Attila T. Hun”</li>
+<li><tt class="docutils literal"><span class="pre">CurrentInterestRate</span> <span class="pre">=</span> <span class="pre">0.015</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">NameOfPHB</span> <span class="pre">=</span> <span class="pre">“Attila</span> <span class="pre">T.</span> <span class="pre">Hun”</span></tt></li>
 </ul>
 </li>
 <li>An absolute (i.e. not relative) cell reference<ul>
-<li>CurrentInterestRate = Sheet1!$B$4</li>
+<li><tt class="docutils literal"><span class="pre">CurrentInterestRate</span> <span class="pre">=</span> <span class="pre">Sheet1!$B$4</span></tt></li>
 </ul>
 </li>
 <li>Absolute reference to a 1D, 2D, or 3D block of cells<ul>
-<li>MonthlySalesByRegion = Sheet2:Sheet5!$A$2:$M$100</li>
+<li><tt class="docutils literal"><span class="pre">MonthlySalesByRegion</span> <span class="pre">=</span> <span class="pre">Sheet2:Sheet5!$A$2:$M$100</span></tt></li>
 </ul>
 </li>
 <li>A list of absolute references<ul>
-<li>Print
-_Titles =
-[row_header_ref, col_header_ref])</li>
+<li><tt class="docutils literal"><span class="pre">Print_Titles</span> <span class="pre">=</span> <span class="pre">[row_header_ref,</span> <span class="pre">col_header_ref])</span></tt></li>
 </ul>
 </li>
 </ul>
 <p>Constants can be extracted.</p>
-<p>The coordinates of an absolute
-reference can be extracted so that you can then extract the corresponding data from the relevant sheet(s).</p>
+<p>The coordinates of an absolute reference can be extracted so that you can then extract the corresponding data from the relevant sheet(s).</p>
 <p>A relative reference is useful only if you have external knowledge of what cells can be used as the origin. Many formulas found in Excel files include function calls and multiple references and are not useful, and can be too hard to evaluate.</p>
-<p>A full calculation engine is not included in xlrd.</p>
+<p>A full calculation engine is not included in <tt class="docutils literal"><span class="pre">xlrd</span></tt>.</p>
 </div>
 <div class="section" id="scope">
 <h3>Scope<a class="headerlink" href="#scope" title="Permalink to this headline">¶</a></h3>
-<p>The scope of a Name can be global, or it may be specific to a particular sheet. A Name&#8217;s identifier may be re-used in different scopes. When there are multiple Names with the same identifier, the most appropriate one is used based on scope. A good example of this is the built-in name Print_Area; each worksheet may have one of these.</p>
+<p>The scope of a Name can be global, or it may be specific to a particular sheet. A Name&#8217;s identifier may be re-used in different scopes. When there are multiple Names with the same identifier, the most appropriate one is used based on scope. A good example of this is the built-in name <tt class="docutils literal"><span class="pre">Print_Area</span></tt>; each worksheet may have one of these.</p>
 <p>Examples:</p>
-<p>name=rate, scope=Sheet1, formula=0.015</p>
-<p>name=rate, scope=Sheet2, formula=0.023</p>
-<p>name=rate, scope=
-<em>global</em>
-, formula=0.040</p>
-<p>A cell formula
-(1+rate)^20
-is equivalent to
-1.015^20
-if it appears in
-Sheet1
-but equivalent to
-1.023^20
-if it appears in
-Sheet2
-, and
-1.040^20
-if it appears in any other sheet.</p>
+<p><tt class="docutils literal"><span class="pre">name=rate,</span> <span class="pre">scope=Sheet1,</span> <span class="pre">formula=0.015</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">name=rate,</span> <span class="pre">scope=Sheet2,</span> <span class="pre">formula=0.023</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">name=rate,</span> <span class="pre">scope=``*global*</span></tt>, formula=0.040``</p>
+<p>A cell formula <tt class="docutils literal"><span class="pre">(1+rate)^20</span></tt> is equivalent to <tt class="docutils literal"><span class="pre">1.015^20</span></tt> if it appears in <tt class="docutils literal"><span class="pre">Sheet1</span></tt> but equivalent to <tt class="docutils literal"><span class="pre">1.023^20</span></tt> if it appears in <tt class="docutils literal"><span class="pre">Sheet2</span></tt>, and <tt class="docutils literal"><span class="pre">1.040^20</span></tt> if it appears in any other sheet.</p>
 </div>
 <div class="section" id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
 <p>Common reasons for using names include:</p>
 <ul class="simple">
 <li>Assigning textual names to values that may occur in many places within a workbook<ul>
-<li>eg:
-RATE = 0.015</li>
+<li>eg: <tt class="docutils literal"><span class="pre">RATE</span> <span class="pre">=</span> <span class="pre">0.015</span></tt></li>
 </ul>
 </li>
 <li>Assigning textual names to complex formulae that may be easily mis-copied<ul>
-<li>eg:
-SALES_RESULTS = $A$10:$M$999</li>
+<li>eg: <tt class="docutils literal"><span class="pre">SALES_RESULTS</span> <span class="pre">=</span> <span class="pre">$A$10:$M$999</span></tt></li>
 </ul>
 </li>
 </ul>
 <p>Here&#8217;s an example real-world use case: reporting to head office. A company&#8217;s head office makes up a template workbook. Each department gets a copy to fill in. The various ranges of data to be provided all have defined names. When the files come back, a script is used to
 validate that the department hasn&#8217;t trashed the workbook and the names are used to extract the data for further processing. Using names decouples any artistic repositioning of the ranges, by either head office template-designing user or by departmental users who are filling in the template, from the script which only has to know what the names of the ranges are.</p>
-<p>In the examples directory of the
-xlrd
-distribution you will find
-namesdemo.xls
-which has examples of most of the non-macro varieties of defined names. There is also
-xlrdnamesAPIdemo.py
-which shows how to use the name lookup dictionaries, and how to extract constants and references and the data that references point to.</p>
+<p>In the examples directory of the <tt class="docutils literal"><span class="pre">xlrd</span></tt> distribution you will find <tt class="docutils literal"><span class="pre">namesdemo.xls</span></tt> which has examples of most of the non-macro varieties of defined names. There is also <tt class="docutils literal"><span class="pre">xlrdnamesAPIdemo.py</span></tt> which shows how to use the name lookup dictionaries, and how to extract constants and references and the data that references point to.</p>
 </div>
 </div>
 <div class="section" id="formatting">
 <h2>Formatting<a class="headerlink" href="#formatting" title="Permalink to this headline">¶</a></h2>
-<p>We&#8217;ve already seen that
-open_workbook
-has a parameter to load formatting information from Excel files. When this is done, all the formatting information is available, but the details of how it is presented are beyond the scope of this tutorial.</p>
-<p>If you wish to copy existing formatted data to a new Excel file, see
-xlutils.copy
-and
-xlutils.filter
-.</p>
+<p>We&#8217;ve already seen that <tt class="docutils literal"><span class="pre">open_workbook</span></tt> has a parameter to load formatting information from Excel files. When this is done, all the formatting information is available, but the details of how it is presented are beyond the scope of this tutorial.</p>
+<p>If you wish to copy existing formatted data to a new Excel file, see <tt class="docutils literal"><span class="pre">xlutils.copy</span></tt> and <tt class="docutils literal"><span class="pre">xlutils.filter</span></tt>.</p>
 <p>If you do wish to inspect formatting information, you&#8217;ll need to consult the following attributes of the following classes:</p>
 <div class="section" id="xlrd-book">
 <h3>xlrd.Book<a class="headerlink" href="#xlrd-book" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">colour_map</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">font_list</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">format_list</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">format_map</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">palette_record</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">style_name_map</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xf_list</span></tt></p>
 </div>
 <div class="section" id="xlrd-sheet-sheet">
 <h3>xlrd.sheet.Sheet<a class="headerlink" href="#xlrd-sheet-sheet" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">cell_xf_index</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">rowinfo_map</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">colinfo_map</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">computed_column_width</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">default_additional_space_above</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">default_additional_space_below</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">default_row_height</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">default_row_height_mismatch</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">default_row_hidden</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">defcolwidth</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">gcw</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">merged_cells</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">standard_width</span></tt></p>
 </div>
 <div class="section" id="xlrd-sheet-cell">
 <h3>xlrd.sheet.Cell<a class="headerlink" href="#xlrd-sheet-cell" title="Permalink to this headline">¶</a></h3>
-<p>xf_index</p>
+<p><tt class="docutils literal"><span class="pre">xf_index</span></tt></p>
 </div>
 <div class="section" id="other-classes">
 <h3>Other Classes<a class="headerlink" href="#other-classes" title="Permalink to this headline">¶</a></h3>
 <p>In addition, the following classes are solely used to represent formatting information:</p>
+<p><tt class="docutils literal"><span class="pre">xlrd.sheet.Rowinfo</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.sheet.Colinfo</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.formatting.Font</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.formatting.Format</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.formatting.XF</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.formatting.XFAlignment</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.formatting.XFBackground</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.formatting.XFBorder</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">xlrd.formatting.XFProtection</span></tt></p>
 </div>
 </div>
 <div class="section" id="working-with-large-excel-files">
 <h2>Working with large Excel files<a class="headerlink" href="#working-with-large-excel-files" title="Permalink to this headline">¶</a></h2>
-<p>If you&#8217;re working with particularly large Excel files then there are two features of xlrd that you should be aware of:</p>
+<p>If you are working with particularly large Excel files, then there are two features of <tt class="docutils literal"><span class="pre">xlrd</span></tt> that you should be aware of:</p>
 <ul class="simple">
-<li>The on_demand parameter can be passed as True to open_workbook resulting in worksheets only being loaded into memory when they are requested.</li>
-<li>xlrd.Book objects have an unload_sheet method that will unload worksheet, specified by either sheet index or sheet name, from memory.</li>
+<li>The <tt class="docutils literal"><span class="pre">on_demand</span></tt> parameter can be passed as <tt class="docutils literal"><span class="pre">True</span></tt> to <tt class="docutils literal"><span class="pre">open_workbook</span></tt> resulting in worksheets only being loaded into memory when they are requested.</li>
+<li><tt class="docutils literal"><span class="pre">xlrd.Book</span></tt> objects have an <tt class="docutils literal"><span class="pre">unload_sheet</span></tt> method that will unload worksheet, specified by either sheet index or sheet name, from memory.</li>
 </ul>
 <p>The following example shows how a large workbook could be iterated over when only sheets matching a certain pattern need to be inspected, and where only one of those sheets ends up in memory at any one time:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlrd</span> <span class="kn">import</span> <span class="n">open_workbook</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">open_workbook</span><span class="p">(</span><span class="s">&#39;simple.xls&#39;</span><span class="p">,</span><span class="n">on_demand</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_names</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;2&#39;</span><span class="p">):</span>
+        <span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">sheet_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">sheet</span><span class="o">.</span><span class="n">cell_value</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">book</span><span class="o">.</span><span class="n">unload_sheet</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="n">large_files</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="introspecting-excel-files-with-runxlrd-py">
-<h2>Introspecting Excel files with runxlrd.py<a class="headerlink" href="#introspecting-excel-files-with-runxlrd-py" title="Permalink to this headline">¶</a></h2>
-<p>The xlrd source distribution includes a
-runxlrd.py
-script that is extremely useful for introspecting Excel files without writing a single line of Python.</p>
+<h2>Introspecting Excel files with &#8216;&#8217;runxlrd.py&#8217;&#8216;<a class="headerlink" href="#introspecting-excel-files-with-runxlrd-py" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">xlrd</span></tt> source distribution includes a <tt class="docutils literal"><span class="pre">runxlrd.py</span></tt> script that is extremely useful for introspecting Excel files without writing a single line of Python.</p>
 <p>You are encouraged to run a variety of the commands it provides over the Excel files provided in the course materials.</p>
-<p>The following gives an overview of what&#8217;s available from
-runxlrd
-, and can be obtained using
-python runxlrd.py –-help
-:</p>
-<p>runxlrd.py [options] command [input-file-patterns]</p>
-<p>Commands:</p>
-<p>2rows
-Print the contents of first and last row in each sheet</p>
-<p>3rows
-Print the contents of first, second and last row in each sheet</p>
-<p>bench
-Same as &#8220;show&#8221;, but doesn&#8217;t print &#8211; for profiling</p>
-<p>biff_count[1]
-Print a count of each type of BIFF record in the file</p>
-<p>biff_dump[1]
-Print a dump (char and hex) of the BIFF records in the file</p>
-<p>fonts
-hdr + print a dump of all font objects</p>
-<p>hdr
-Mini-overview of file (no per-sheet information)</p>
-<p>hotshot
-Do a hotshot profile run e.g. ... -f1 hotshot bench bigfile*.xls</p>
-<p>labels
-Dump of sheet.col_label_ranges and ...row... for each sheet</p>
-<p>name_dump
-Dump of each object in book.name_obj_list</p>
-<p>names
-Print brief information for each NAME record</p>
-<p>ov
-Overview of file</p>
-<p>profile
-Like &#8220;hotshot&#8221;, but uses cProfile</p>
-<p>show
-Print the contents of all rows in each sheet</p>
-<p>version[0]
-Print versions of xlrd and Python and exit</p>
-<p>xfc
-Print &#8220;XF counts&#8221; and cell-type counts &#8211; see code for details</p>
-<p>[0] means no file arg</p>
-<p>[1] means only one file arg i.e. no glob.glob pattern</p>
-<p>Options:</p>
-<p>-h, &#8211;help
-show this help message and exit</p>
-<p>-l LOGFILENAME, &#8211;logfilename=LOGFILENAME</p>
-<p>contains error messages</p>
-<p>-v VERBOSITY, &#8211;verbosity=VERBOSITY</p>
-<p>level of information and diagnostics provided</p>
-<p>-p PICKLEABLE, &#8211;pickleable=PICKLEABLE</p>
-<p>1: ensure Book object is pickleable (default); 0:</p>
-<p>don&#8217;t bother</p>
-<p>-m MMAP, &#8211;mmap=MMAP
-1: use mmap; 0: don&#8217;t use mmap; -1: accept heuristic</p>
-<p>-e ENCODING, &#8211;encoding=ENCODING</p>
-<p>encoding override</p>
-<p>-f FORMATTING, &#8211;formatting=FORMATTING</p>
-<p>0 (default): no fmt info 1: fmt info (all cells)</p>
-<p>-g GC, &#8211;gc=GC
-0: auto gc enabled; 1: auto gc disabled, manual</p>
-<p>collect after each file; 2: no gc</p>
-<p>-s ONESHEET, &#8211;onesheet=ONESHEET</p>
-<p>restrict output to this sheet (name or index)</p>
-<p>-u, &#8211;unnumbered
-omit line numbers or offsets in biff_dump</p>
+<p>The following gives an overview of what&#8217;s available from <tt class="docutils literal"><span class="pre">runxlrd</span></tt>, and can be obtained using <tt class="docutils literal"><span class="pre">python</span> <span class="pre">runxlrd.py</span> <span class="pre">–-help</span></tt>:</p>
+<div class="highlight-python"><pre>runxlrd.py [options] command [input-file-patterns]
+
+Commands:
+
+2rows           Print the contents of first and last row in each sheet
+3rows           Print the contents of first, second and last row in each sheet
+bench           Same as "show", but doesn't print -- for profiling
+biff_count[1]   Print a count of each type of BIFF record in the file
+biff_dump[1]    Print a dump (char and hex) of the BIFF records in the file
+fonts           hdr + print a dump of all font objects
+hdr             Mini-overview of file (no per-sheet information)
+hotshot         Do a hotshot profile run e.g. ... -f1 hotshot bench bigfile*.xls
+labels          Dump of sheet.col_label_ranges and ...row... for each sheet
+name_dump       Dump of each object in book.name_obj_list
+names           Print brief information for each NAME record
+ov              Overview of file
+profile         Like "hotshot", but uses cProfile
+show            Print the contents of all rows in each sheet
+version[0]      Print versions of xlrd and Python and exit
+xfc             Print "XF counts" and cell-type counts -- see code for details
+
+[0] means no file arg
+[1] means only one file arg i.e. no glob.glob pattern
+
+
+Options:
+
+-h, --help            show this help message and exit
+-l LOGFILENAME, --logfilename=LOGFILENAME
+                      contains error messages
+-v VERBOSITY, --verbosity=VERBOSITY
+                      level of information and diagnostics provided
+-p PICKLEABLE, --pickleable=PICKLEABLE
+                      1: ensure Book object is pickleable (default); 0: don't bother
+-m MMAP, --mmap=MMAP  1: use mmap; 0: don't use mmap; -1: accept heuristic
+-e ENCODING, --encoding=ENCODING
+                      encoding override
+-f FORMATTING, --formatting=FORMATTING
+                      0 (default): no fmt info 1: fmt info (all cells)
+-g GC, --gc=GC        0: auto gc enabled; 1: auto gc disabled, manual collect after each file; 2: no gc
+-s ONESHEET, --onesheet=ONESHEET
+                      restrict output to this sheet (name or index)
+-u, --unnumbered      omit line numbers or offsets in biff_dump</pre>
+</div>
 </div>
 </div>
 
@@ -545,7 +597,7 @@ omit line numbers or offsets in biff_dump</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#working-with-large-excel-files">Working with large Excel files</a></li>
-<li><a class="reference internal" href="#introspecting-excel-files-with-runxlrd-py">Introspecting Excel files with runxlrd.py</a></li>
+<li><a class="reference internal" href="#introspecting-excel-files-with-runxlrd-py">Introspecting Excel files with &#8216;&#8217;runxlrd.py&#8217;&#8216;</a></li>
 </ul>
 </li>
 </ul>

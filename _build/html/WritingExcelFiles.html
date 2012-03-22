@@ -53,106 +53,76 @@
             
   <div class="section" id="writing-excel-files">
 <h1>Writing Excel Files<a class="headerlink" href="#writing-excel-files" title="Permalink to this headline">¶</a></h1>
-<p>All the examples shown below can be found in the
-xlwt
-directory of the course material.</p>
+<p>All the examples shown below can be found in the <tt class="docutils literal"><span class="pre">xlwt</span></tt> directory of the course material.</p>
 <div class="section" id="creating-elements-within-a-workbook">
 <h2>Creating elements within a Workbook<a class="headerlink" href="#creating-elements-within-a-workbook" title="Permalink to this headline">¶</a></h2>
-<p>Workbooks are created with
-xlwt
-by instantiating an
-xlwt.Workbook
-object, manipulating it and then calling its
-save
-method.</p>
-<p>The
-save
-method may be passed either a string containing the path to write to or a file-like object, opened for writing in binary mode, to which the binary Excel file data will be written.</p>
+<p>Workbooks are created with <tt class="docutils literal"><span class="pre">xlwt</span></tt> by instantiating an <tt class="docutils literal"><span class="pre">xlwt.Workbook</span></tt> object, manipulating it and then calling its <tt class="docutils literal"><span class="pre">save</span></tt> method.</p>
+<p>The <tt class="docutils literal"><span class="pre">save</span></tt> method may be passed either a string containing the path to write to or a file-like object, opened for writing in binary mode, to which the binary Excel file data will be written.</p>
 <p>The following objects can be created within a workbook:</p>
 <div class="section" id="worksheets">
 <h3>Worksheets<a class="headerlink" href="#worksheets" title="Permalink to this headline">¶</a></h3>
-<p>Worksheets are created with the
-add_sheet
-method of the
-Workbook
-class.</p>
-<p>To retrieve an existing sheet from a
-Workbook
-, use its
-get_sheet
-method. This method is particularly useful when the
-Workbook
-has been instantiated by
-xlutils.copy
-.</p>
+<p>Worksheets are created with the <tt class="docutils literal"><span class="pre">add_sheet</span></tt> method of the <tt class="docutils literal"><span class="pre">Workbook</span></tt> class.</p>
+<p>To retrieve an existing sheet from a <tt class="docutils literal"><span class="pre">Workbook</span></tt>, use its <tt class="docutils literal"><span class="pre">get_sheet</span></tt> method. This method is particularly useful when the <tt class="docutils literal"><span class="pre">Workbook</span></tt> has been instantiated by <tt class="docutils literal"><span class="pre">xlutils.copy</span></tt>.</p>
 </div>
 <div class="section" id="rows">
 <h3>Rows<a class="headerlink" href="#rows" title="Permalink to this headline">¶</a></h3>
-<p>Rows are created using the
-row</p>
-<p>method of the
-Worksheet
-class and contain all of the cells for a given row.</p>
-<p>The
-row
-method is also used to retrieve existing rows from a
-Worksheet
-.</p>
-<p>If a large number of rows have been written to a
-Worksheet
-and memory usage is becoming a problem, the
-flush_row_data
-method may be called on the
-Worksheet
-. Once called, any rows flushed cannot be accessed or modified.</p>
-<p>It is recommended that
-flush_row_data
-is called for every 1000 or so rows of a normal size that are written to an
-xlwt.Workbook
-. If the rows are huge, that number should be reduced.</p>
+<p>Rows are created using the <tt class="docutils literal"><span class="pre">row</span></tt> method of the <tt class="docutils literal"><span class="pre">Worksheet</span></tt> class and contain all of the cells for a given row.</p>
+<p>The <tt class="docutils literal"><span class="pre">row</span></tt> method is also used to retrieve existing rows from a <tt class="docutils literal"><span class="pre">Worksheet</span></tt>.</p>
+<p>If a large number of rows have been written to a <tt class="docutils literal"><span class="pre">Worksheet</span></tt> and memory usage is becoming a problem, the <tt class="docutils literal"><span class="pre">flush_row_data</span></tt> method may be called on the <tt class="docutils literal"><span class="pre">Worksheet</span></tt>. Once called, any rows flushed cannot be accessed or modified.</p>
+<p>It is recommended that <tt class="docutils literal"><span class="pre">flush_row_data</span></tt> is called for every 1000 or so rows of a normal size that are written to an <tt class="docutils literal"><span class="pre">xlwt.Workbook</span></tt>. If the rows are huge, that number should be reduced.</p>
 </div>
 <div class="section" id="columns">
 <h3>Columns<a class="headerlink" href="#columns" title="Permalink to this headline">¶</a></h3>
-<p>Columns are created using the
-col
-method of the
-Worksheet
-class and contain display formatting information for a given column.</p>
-<p>The
-col
-method is also used to retrieve existing columns from a
-Worksheet
-.</p>
+<p>Columns are created using the <tt class="docutils literal"><span class="pre">col</span></tt> method of the <tt class="docutils literal"><span class="pre">Worksheet</span></tt> class and contain display formatting information for a given column.</p>
+<p>The <tt class="docutils literal"><span class="pre">col</span></tt> method is also used to retrieve existing columns from a <tt class="docutils literal"><span class="pre">Worksheet</span></tt>.</p>
 </div>
 <div class="section" id="cells">
 <h3>Cells<a class="headerlink" href="#cells" title="Permalink to this headline">¶</a></h3>
-<p>Cells can be written using either the
-write
-method of either the
-Worksheet
-or
-Row</p>
-<p>class.</p>
+<p>Cells can be written using either the <tt class="docutils literal"><span class="pre">write</span></tt> method of either the <tt class="docutils literal"><span class="pre">Worksheet</span></tt> or <tt class="docutils literal"><span class="pre">Row</span></tt> class.</p>
 <p>A more detailed discussion of different ways of writing cells and the different types of cell that may be written is covered later.</p>
 </div>
 <div class="section" id="a-simple-example">
 <h3>A Simple Example<a class="headerlink" href="#a-simple-example" title="Permalink to this headline">¶</a></h3>
 <p>The following example shows how all of the above methods can be used to build and save a simple workbook:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryFile</span>
+<span class="kn">from</span> <span class="nn">xlwt</span> <span class="kn">import</span> <span class="n">Workbook</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">Workbook</span><span class="p">()</span>
+<span class="n">sheet1</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s">&#39;Sheet 1&#39;</span><span class="p">)</span>
+<span class="n">book</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s">&#39;Sheet 2&#39;</span><span class="p">)</span>
+
+<span class="n">sheet1</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;A1&#39;</span><span class="p">)</span>
+<span class="n">sheet1</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;B1&#39;</span><span class="p">)</span>
+<span class="n">row1</span> <span class="o">=</span> <span class="n">sheet1</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">row1</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;A2&#39;</span><span class="p">)</span>
+<span class="n">row1</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;B2&#39;</span><span class="p">)</span>
+<span class="n">sheet1</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="n">sheet2</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">get_sheet</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;Sheet 2 A1&#39;</span><span class="p">)</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;Sheet 2 B1&#39;</span><span class="p">)</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">flush_row_data</span><span class="p">()</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;Sheet 2 A3&#39;</span><span class="p">)</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">book</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;simple.xls&#39;</span><span class="p">)</span>
+<span class="n">book</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">TemporaryFile</span><span class="p">())</span>
+
+<span class="n">simple</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="unicode">
 <h2>Unicode<a class="headerlink" href="#unicode" title="Permalink to this headline">¶</a></h2>
-<p>The best policy is to pass unicode objects to all
-xlwt
--related method calls.</p>
-<p>If you absolutely have to use encoded strings then make sure that the encoding used is consistent across all calls to any
-xlwt
--related methods.</p>
-<p>If encoded strings are used and the encoding is not
-&#8216;ascii&#8217;
-, then any
-Workbook
-objects must be created with the appropriate encoding specified:</p>
+<p>The best policy is to pass unicode objects to all <tt class="docutils literal"><span class="pre">xlwt</span></tt>-related method calls.</p>
+<p>If you absolutely have to use encoded strings then make sure that the encoding used is consistent across all calls to any <tt class="docutils literal"><span class="pre">xlwt</span></tt>-related methods.</p>
+<p>If encoded strings are used and the encoding is not <tt class="docutils literal"><span class="pre">'ascii'</span></tt>, then any <tt class="docutils literal"><span class="pre">Workbook</span></tt> objects must be created with the appropriate encoding specified:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlwt</span> <span class="kn">import</span> <span class="n">Workbook</span>
+<span class="n">book</span> <span class="o">=</span> <span class="n">Workbook</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="writing-to-cells">
 <h2>Writing to Cells<a class="headerlink" href="#writing-to-cells" title="Permalink to this headline">¶</a></h2>
@@ -161,13 +131,13 @@ objects must be created with the appropriate encoding specified:</p>
 <h3>Different ways of writing cells<a class="headerlink" href="#different-ways-of-writing-cells" title="Permalink to this headline">¶</a></h3>
 <p>There are generally three ways to write to a particular cell:</p>
 <ul class="simple">
-<li>Worksheet.write(row_index,column_index,value)<ul>
-<li>This is just syntactic sugar for sheet.row(row_index).write(column_index,value)</li>
-<li>It can be useful when you only want to write one cell to a row</li>
+<li><tt class="docutils literal"><span class="pre">Worksheet.write(row_index,column_index,value)</span></tt><ul>
+<li>This is just syntactic sugar for <tt class="docutils literal"><span class="pre">sheet.row(row_index).write(column_index,value)</span></tt>.</li>
+<li>It can be useful when you only want to write one cell to a row.</li>
 </ul>
 </li>
-<li>Row.write(column_index,value)<ul>
-<li>This will write the correct type of cell based on the value passed</li>
+<li><tt class="docutils literal"><span class="pre">Row.write(column_index,value)</span></tt><ul>
+<li>This will write the correct type of cell based on the value passed.</li>
 <li>Because it figures out what type of cell to write, this method may be slower for writing large workbooks</li>
 </ul>
 </li>
@@ -177,25 +147,33 @@ objects must be created with the appropriate encoding specified:</p>
 </ul>
 </li>
 </ul>
-<p>In general, use Worksheet.write for convenience and the specialist write methods if you require speed for a large volume of data.</p>
+<p>In general, use <tt class="docutils literal"><span class="pre">Worksheet.write</span></tt> for convenience and the specialist write methods if you require speed for a large volume of data.</p>
 </div>
 <div class="section" id="overwriting-cells">
 <h3>Overwriting Cells<a class="headerlink" href="#overwriting-cells" title="Permalink to this headline">¶</a></h3>
-<p>The Excel file format does nothing to prevent multiple records for a particular cell occurring but, if this happens, the results will vary depending on what application is used to open the file. Excel will display a
-“File error: data may have been lost”
-while OpenOffice.org will show the last record for the cell that occurs in the file.</p>
-<p>To help prevent this,
-xlwt
-provides two modes of operation:</p>
+<p>The Excel file format does nothing to prevent multiple records for a particular cell occurring but, if this happens, the results will vary depending on what application is used to open the file. Excel will display a <tt class="docutils literal"><span class="pre">“File</span> <span class="pre">error:</span> <span class="pre">data</span> <span class="pre">may</span> <span class="pre">have</span> <span class="pre">been</span> <span class="pre">lost”</span></tt> while OpenOffice.org will show the last record for the cell that occurs in the file.</p>
+<p>To help prevent this, <tt class="docutils literal"><span class="pre">xlwt</span></tt> provides two modes of operation:</p>
 <ul class="simple">
-<li>Writing to the same cell more than once will result in an exception
-This is the default mode.</li>
+<li>Writing to the same cell more than once will result in an exception.  This is the default mode.</li>
 <li>Writing to the same cell more than once will replace the record for that cell, and only one record will be written when the Workbook is saved.</li>
 </ul>
 <p>The following example demonstrates these two options:</p>
-<p>The most common case for needing to overwrite cells is when an existing Excel file has been loaded into a Workbook instance using
-xlutils.copy
-.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">xlwt</span> <span class="kn">import</span> <span class="n">Workbook</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">Workbook</span><span class="p">()</span>
+<span class="n">sheet1</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s">&#39;Sheet 1&#39;</span><span class="p">,</span><span class="n">cell_overwrite_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">sheet1</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;original&#39;</span><span class="p">)</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">get_sheet</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;new&#39;</span><span class="p">)</span>
+
+<span class="n">sheet2</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s">&#39;Sheet 2&#39;</span><span class="p">)</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;original&#39;</span><span class="p">)</span>
+<span class="n">sheet2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;new&#39;</span><span class="p">)</span>
+
+<span class="n">overwriting</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The most common case for needing to overwrite cells is when an existing Excel file has been loaded into a Workbook instance using <tt class="docutils literal"><span class="pre">xlutils.copy</span></tt>.</p>
 </div>
 </div>
 <div class="section" id="types-of-cell">
@@ -203,117 +181,147 @@ xlutils.copy
 <p>All types of cell supported by the Excel file format can be written:</p>
 <div class="section" id="text">
 <h3>Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
-<p>When passed a
-unicode
-or string, the
-write
-methods will write a Text cell.</p>
-<p>The
-set_cell_text
-method of the
-Row
-class can also be used to write Text cells.</p>
+<p>When passed a <tt class="docutils literal"><span class="pre">unicode</span></tt> or string, the <tt class="docutils literal"><span class="pre">write</span></tt> methods will write a <tt class="docutils literal"><span class="pre">Text</span></tt> cell.</p>
+<p>The <tt class="docutils literal"><span class="pre">set_cell_text</span></tt> method of the <tt class="docutils literal"><span class="pre">Row</span></tt> class can also be used to write <tt class="docutils literal"><span class="pre">Text</span></tt> cells.</p>
 <p>When passed a string, these methods will first decode the string using the Workbook&#8217;s encoding.</p>
 </div>
 <div class="section" id="number">
 <h3>Number<a class="headerlink" href="#number" title="Permalink to this headline">¶</a></h3>
-<p>When passed a
-float
-,
-int
-,
-long
-, or
-decimal.Decimal
-, the
-write
-methods will write a Number cell.</p>
-<p>The
-set_cell_number
-method of the
-Row
-class can also be used to write Number cells.</p>
+<p>When passed a <tt class="docutils literal"><span class="pre">float</span></tt>, <tt class="docutils literal"><span class="pre">int</span></tt>, <tt class="docutils literal"><span class="pre">long</span></tt>, or <tt class="docutils literal"><span class="pre">decimal.Decimal</span></tt>, the <tt class="docutils literal"><span class="pre">write</span></tt> methods will write a <tt class="docutils literal"><span class="pre">Number</span></tt> cell.</p>
+<p>The <tt class="docutils literal"><span class="pre">set_cell_number</span></tt> method of the <tt class="docutils literal"><span class="pre">Row</span></tt> class can also be used to write <tt class="docutils literal"><span class="pre">Number</span></tt> cells.</p>
 </div>
 <div class="section" id="date">
 <h3>Date<a class="headerlink" href="#date" title="Permalink to this headline">¶</a></h3>
-<p>When passed a
-datetime.datetime
-,
-datetime.date
-or
-datetime.time
-, the
-write
-methods will write a Date cell.</p>
-<p>The
-set_cell_date
-method of the
-Row
-class can also be used to write Date cells.</p>
-<p>Note: As mentioned earlier, a date is not really a separate type in Excel; if you don&#8217;t apply a date format, it will be treated as a number.</p>
+<p>When passed a <tt class="docutils literal"><span class="pre">datetime.datetime</span></tt>, <tt class="docutils literal"><span class="pre">datetime.date</span></tt>, or <tt class="docutils literal"><span class="pre">datetime.time</span></tt>, the <tt class="docutils literal"><span class="pre">write</span></tt> methods will write a <tt class="docutils literal"><span class="pre">Date</span></tt> cell.</p>
+<p>The <tt class="docutils literal"><span class="pre">set_cell_date</span></tt> method of the <tt class="docutils literal"><span class="pre">Row</span></tt> class can also be used to write <tt class="docutils literal"><span class="pre">Date</span></tt> cells.</p>
+<p><strong>Note</strong>: As mentioned earlier, a date is not really a separate type in Excel; if you don&#8217;t apply a date format, it will be treated as a number.</p>
 </div>
 <div class="section" id="boolean">
 <h3>Boolean<a class="headerlink" href="#boolean" title="Permalink to this headline">¶</a></h3>
-<p>When passed a
-bool
-, the
-write
-methods will write a Boolean cell.</p>
-<p>The
-set_cell_boolean
-method of the
-Row
-class can also be used to write Text cells.</p>
+<p>When passed a <tt class="docutils literal"><span class="pre">bool</span></tt>, the <tt class="docutils literal"><span class="pre">write</span></tt> methods will write a <tt class="docutils literal"><span class="pre">Boolean</span></tt> cell.</p>
+<p>The <tt class="docutils literal"><span class="pre">set_cell_boolean</span></tt> method of the <tt class="docutils literal"><span class="pre">Row</span></tt> class can also be used to write <tt class="docutils literal"><span class="pre">Text</span></tt> cells.</p>
 </div>
 <div class="section" id="error">
 <h3>Error<a class="headerlink" href="#error" title="Permalink to this headline">¶</a></h3>
-<p>You shouldn&#8217;t ever want to write Error cells!</p>
-<p>However, if you absolutely must, the
-set_cell_error
-method of the Row class can be used to do so. For convenience, it can be called with either hexadecimal error codes, expressed as integers, or the error text that Excel would display.</p>
+<p>You shouldn&#8217;t ever want to write <tt class="docutils literal"><span class="pre">Error</span></tt> cells!</p>
+<p>However, if you absolutely must, the <tt class="docutils literal"><span class="pre">set_cell_error</span></tt> method of the Row class can be used to do so. For convenience, it can be called with either hexadecimal error codes, expressed as integers, or the error text that Excel would display.</p>
 </div>
 <div class="section" id="blank">
 <h3>Blank<a class="headerlink" href="#blank" title="Permalink to this headline">¶</a></h3>
 <p>It is not normally necessary to write blank cells. The one exception to this is if you wish to apply formatting to a cell that contains nothing.</p>
-<p>To do this, either call the
-write
-methods with an empty string or None, or use the
-set_cell_blank
-method of the
-Row
-class.</p>
-<p>If you need to do this for more than one cell in a row, using the
-set_cell_mulblanks
-method will result in a smaller Excel file when the
-Workbook
-is saved.</p>
-<p>The following example brings all of the above cell types together and shows examples use both the generic
-write
-method and the specialist methods:</p>
+<p>To do this, either call the <tt class="docutils literal"><span class="pre">write</span></tt> methods with an empty string or <tt class="docutils literal"><span class="pre">None</span></tt>, or use the <tt class="docutils literal"><span class="pre">set_cell_blank</span></tt> method of the <tt class="docutils literal"><span class="pre">Row</span></tt> class.</p>
+<p>If you need to do this for more than one cell in a row, using the <tt class="docutils literal"><span class="pre">set_cell_mulblanks</span></tt> method will result in a smaller Excel file when the <tt class="docutils literal"><span class="pre">Workbook</span></tt> is saved.</p>
+<p>The following example brings all of the above cell types together and shows examples use both the generic <tt class="docutils literal"><span class="pre">write</span></tt> method and the specialist methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">xlwt</span> <span class="kn">import</span> <span class="n">Workbook</span><span class="p">,</span><span class="n">Style</span>
+
+<span class="n">wb</span> <span class="o">=</span> <span class="n">Workbook</span><span class="p">()</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s">&#39;Type examples&#39;</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">u&#39;</span><span class="se">\xa3</span><span class="s">&#39;</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;Text&#39;</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">3.1415</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="il">265L</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;3.65&#39;</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_number</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">3.1415</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_number</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_number</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="il">265L</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_number</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">Decimal</span><span class="p">(</span><span class="s">&#39;3.65&#39;</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">date</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">18</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">time</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_date</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">date</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">18</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_date</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_date</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">time</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_boolean</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_boolean</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_error</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x17</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_error</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;#NULL!&#39;</span><span class="p">)</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="mi">0</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="n">Style</span><span class="o">.</span><span class="n">easyxf</span><span class="p">(</span><span class="s">&#39;pattern: pattern solid, fore_colour green;&#39;</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span><span class="bp">None</span><span class="p">,</span><span class="n">Style</span><span class="o">.</span><span class="n">easyxf</span><span class="p">(</span><span class="s">&#39;pattern: pattern solid, fore_colour blue;&#39;</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_blank</span><span class="p">(</span>
+    <span class="mi">0</span><span class="p">,</span><span class="n">Style</span><span class="o">.</span><span class="n">easyxf</span><span class="p">(</span><span class="s">&#39;pattern: pattern solid, fore_colour yellow;&#39;</span><span class="p">))</span>
+<span class="n">ws</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">set_cell_mulblanks</span><span class="p">(</span>
+    <span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">Style</span><span class="o">.</span><span class="n">easyxf</span><span class="p">(</span><span class="s">&#39;pattern: pattern solid, fore_colour red;&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">wb</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;types.xls&#39;</span><span class="p">)</span>
+
+<span class="n">cell_types</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="styles">
 <h2>Styles<a class="headerlink" href="#styles" title="Permalink to this headline">¶</a></h2>
 <p>Most elements of an Excel file can be formatted. For many elements including cells, rows and columns, this is done by assigning a style, known as an XF record, to that element.</p>
-<p>This is done by passing an xlwt.XFStyle instance to the optional last argument to the various write methods and specialist <a href="#id4"><span class="problematic" id="id5">set_cell_</span></a> methods. xlwt.Row and xlwt.Column instances have set_style methods to which an xlwt.XFStyle instance can be passed.</p>
+<p>This is done by passing an <tt class="docutils literal"><span class="pre">xlwt.XFStyle</span></tt> instance to the optional last argument to the various write methods and specialist <tt class="docutils literal"><span class="pre">set_cell_</span> <span class="pre">methods</span></tt>. <tt class="docutils literal"><span class="pre">xlwt.Row</span></tt> and <tt class="docutils literal"><span class="pre">xlwt.Column</span></tt> instances have <tt class="docutils literal"><span class="pre">set_style</span></tt> methods to which an <tt class="docutils literal"><span class="pre">xlwt.XFStyle</span></tt> instance can be passed.</p>
 <div class="section" id="xfstyle">
 <h3>XFStyle<a class="headerlink" href="#xfstyle" title="Permalink to this headline">¶</a></h3>
-<p>In xlwt, the XF record is represented by the XFStyle class and its related attribute classes.</p>
-<p>The following example shows how to create a red Date cell with Arial text and a black border:</p>
+<p>In <tt class="docutils literal"><span class="pre">xlwt</span></tt>, the XF record is represented by the <tt class="docutils literal"><span class="pre">XFStyle</span></tt> class and its related attribute classes.</p>
+<p>The following example shows how to create a red <tt class="docutils literal"><span class="pre">Date</span></tt> cell with Arial text and a black border:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">xlwt</span> <span class="kn">import</span> <span class="n">Workbook</span><span class="p">,</span> <span class="n">XFStyle</span><span class="p">,</span> <span class="n">Borders</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">Font</span>
+
+<span class="n">fnt</span> <span class="o">=</span> <span class="n">Font</span><span class="p">()</span>
+<span class="n">fnt</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Arial&#39;</span>
+
+<span class="n">borders</span> <span class="o">=</span> <span class="n">Borders</span><span class="p">()</span>
+<span class="n">borders</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Borders</span><span class="o">.</span><span class="n">THICK</span>
+<span class="n">borders</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Borders</span><span class="o">.</span><span class="n">THICK</span>
+<span class="n">borders</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">Borders</span><span class="o">.</span><span class="n">THICK</span>
+<span class="n">borders</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">Borders</span><span class="o">.</span><span class="n">THICK</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="p">()</span>
+<span class="n">pattern</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="n">SOLID_PATTERN</span>
+<span class="n">pattern</span><span class="o">.</span><span class="n">pattern_fore_colour</span> <span class="o">=</span> <span class="mh">0x0A</span>
+
+<span class="n">style</span> <span class="o">=</span> <span class="n">XFStyle</span><span class="p">()</span>
+<span class="n">style</span><span class="o">.</span><span class="n">num_format_str</span><span class="o">=</span><span class="s">&#39;YYYY-MM-DD&#39;</span>
+<span class="n">style</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">fnt</span>
+<span class="n">style</span><span class="o">.</span><span class="n">borders</span> <span class="o">=</span> <span class="n">borders</span>
+<span class="n">style</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">Workbook</span><span class="p">()</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s">&#39;A Date&#39;</span><span class="p">)</span>
+<span class="n">sheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">date</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">18</span><span class="p">),</span><span class="n">style</span><span class="p">)</span>
+
+<span class="n">book</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;date.xls&#39;</span><span class="p">)</span>
+
+<span class="n">xfstyle_format</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 <p>This can be quite cumbersome!</p>
 </div>
 <div class="section" id="easyxf">
 <h3>easyxf<a class="headerlink" href="#easyxf" title="Permalink to this headline">¶</a></h3>
-<p>Thankfully,
-xlwt
-provides the
-easyxf
-helper to create
-XFStyle
-instances from human readable text and an optional string containing a number format.</p>
-<p>Here is the above example, this time created with easyxf:</p>
+<p>Thankfully, <tt class="docutils literal"><span class="pre">xlwt</span></tt> provides the <tt class="docutils literal"><span class="pre">easyxf</span></tt> helper to create <tt class="docutils literal"><span class="pre">XFStyle</span></tt> instances from human readable text and an optional string containing a number format.</p>
+<p>Here is the above example, this time created with <tt class="docutils literal"><span class="pre">easyxf</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">xlwt</span> <span class="kn">import</span> <span class="n">Workbook</span><span class="p">,</span> <span class="n">easyxf</span>
+
+<span class="n">book</span> <span class="o">=</span> <span class="n">Workbook</span><span class="p">()</span>
+<span class="n">sheet</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s">&#39;A Date&#39;</span><span class="p">)</span>
+
+<span class="n">sheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">date</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">18</span><span class="p">),</span><span class="n">easyxf</span><span class="p">(</span>
+    <span class="s">&#39;font: name Arial;&#39;</span>
+    <span class="s">&#39;borders: left thick, right thick, top thick, bottom thick;&#39;</span>
+    <span class="s">&#39;pattern: pattern solid, fore_colour red;&#39;</span><span class="p">,</span>
+    <span class="n">num_format_str</span><span class="o">=</span><span class="s">&#39;YYYY-MM-DD&#39;</span>
+    <span class="p">))</span>
+
+<span class="n">book</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;date.xls&#39;</span><span class="p">)</span>
+
+<span class="n">easyxf_format</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 <p>The human readable text breaks roughly as follows, in pseudo-regular expression syntax:</p>
-<p>(&lt;element&gt;:(&lt;attribute&gt; &lt;value&gt;,)+;)+</p>
+<p><tt class="docutils literal"><span class="pre">(&lt;element&gt;:(&lt;attribute&gt;</span> <span class="pre">&lt;value&gt;,)+;)+</span></tt></p>
 <p>This means:</p>
 <ul class="simple">
 <li>The text contains a semi-colon delimited list of element definitions.</li>
@@ -681,7 +689,9 @@ diag_colour</td>
 </tr>
 </tbody>
 </table>
-<p><a href="#id1"><span class="problematic" id="id2">*</span></a>This can be either an integer width between 0 and 13 or one of the following:</p>
+<ul class="simple">
+<li>This can be either an integer width between 0 and 13 or one of the following:</li>
+</ul>
 <p>no_line, thin, medium, dashed, dotted, thick, double, hair, medium_dashed, thin_dash_dotted, medium_dash_dotted, thin_dash_dot_dotted, medium_dash_dot_dotted, slanted_medium_dash_dotted</p>
 </div>
 <div class="section" id="pattern">
@@ -1021,8 +1031,8 @@ method of the
 Sheet
 class:</p>
 </div>
-<div class="section" id="id3">
-<h3>Borders<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>Borders<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Writing a single cell with borders is simple enough, however applying a border to a group of cells is painful as shown in this example:</p>
 <p>NB: Extra care needs to be taken if you&#8217;re updating an existing Excel file!</p>
 </div>
@@ -1142,7 +1152,7 @@ True
 <li><a class="reference internal" href="#hyperlinks">Hyperlinks</a></li>
 <li><a class="reference internal" href="#images">Images</a></li>
 <li><a class="reference internal" href="#merged-cells">Merged cells</a></li>
-<li><a class="reference internal" href="#id3">Borders</a></li>
+<li><a class="reference internal" href="#id1">Borders</a></li>
 <li><a class="reference internal" href="#split-and-freeze-panes">Split and Freeze panes</a></li>
 <li><a class="reference internal" href="#outlines">Outlines</a></li>
 <li><a class="reference internal" href="#zoom-magnification-and-page-break-preview">Zoom magnification and Page Break Preview</a></li>

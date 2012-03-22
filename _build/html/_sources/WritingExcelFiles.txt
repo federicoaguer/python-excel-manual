@@ -1,132 +1,96 @@
 Writing Excel Files
 ===================
 
-All the examples shown below can be found in the
-xlwt
-directory of the course material.
+All the examples shown below can be found in the ``xlwt`` directory of the course material.
 
 Creating elements within a Workbook
 -----------------------------------
 
-Workbooks are created with
-xlwt
-by instantiating an
-xlwt.Workbook
-object, manipulating it and then calling its
-save
-method.
+Workbooks are created with ``xlwt`` by instantiating an ``xlwt.Workbook`` object, manipulating it and then calling its ``save`` method.
 
-The
-save
-method may be passed either a string containing the path to write to or a file-like object, opened for writing in binary mode, to which the binary Excel file data will be written.
+The ``save`` method may be passed either a string containing the path to write to or a file-like object, opened for writing in binary mode, to which the binary Excel file data will be written.
 
 The following objects can be created within a workbook:
 
 Worksheets
 ~~~~~~~~~~
 
-Worksheets are created with the
-add_sheet
-method of the
-Workbook
-class.
+Worksheets are created with the ``add_sheet`` method of the ``Workbook`` class.
 
-To retrieve an existing sheet from a
-Workbook
-, use its
-get_sheet
-method. This method is particularly useful when the
-Workbook
-has been instantiated by
-xlutils.copy
-.
+To retrieve an existing sheet from a ``Workbook``, use its ``get_sheet`` method. This method is particularly useful when the ``Workbook`` has been instantiated by ``xlutils.copy``.
 
 Rows
 ~~~~
 
-Rows are created using the
-row
+Rows are created using the ``row`` method of the ``Worksheet`` class and contain all of the cells for a given row.
 
-method of the
-Worksheet
-class and contain all of the cells for a given row.
+The ``row`` method is also used to retrieve existing rows from a ``Worksheet``.
 
-The
-row
-method is also used to retrieve existing rows from a
-Worksheet
-.
+If a large number of rows have been written to a ``Worksheet`` and memory usage is becoming a problem, the ``flush_row_data`` method may be called on the ``Worksheet``. Once called, any rows flushed cannot be accessed or modified.
 
-If a large number of rows have been written to a
-Worksheet
-and memory usage is becoming a problem, the
-flush_row_data
-method may be called on the
-Worksheet
-. Once called, any rows flushed cannot be accessed or modified.
-
-It is recommended that
-flush_row_data
-is called for every 1000 or so rows of a normal size that are written to an
-xlwt.Workbook
-. If the rows are huge, that number should be reduced.
+It is recommended that ``flush_row_data`` is called for every 1000 or so rows of a normal size that are written to an ``xlwt.Workbook``. If the rows are huge, that number should be reduced.
 
 Columns
 ~~~~~~~
 
-Columns are created using the
-col
-method of the
-Worksheet
-class and contain display formatting information for a given column.
+Columns are created using the ``col`` method of the ``Worksheet`` class and contain display formatting information for a given column.
 
-The
-col
-method is also used to retrieve existing columns from a
-Worksheet
-.
+The ``col`` method is also used to retrieve existing columns from a ``Worksheet``.
 
 Cells
 ~~~~~
 
-Cells can be written using either the
-write
-method of either the
-Worksheet
-or
-Row
-
-class.
+Cells can be written using either the ``write`` method of either the ``Worksheet`` or ``Row`` class.
 
 A more detailed discussion of different ways of writing cells and the different types of cell that may be written is covered later.
-
-
-
 
 A Simple Example
 ~~~~~~~~~~~~~~~~
 
 The following example shows how all of the above methods can be used to build and save a simple workbook:
 
+::
+
+  from tempfile import TemporaryFile
+  from xlwt import Workbook
+
+  book = Workbook()
+  sheet1 = book.add_sheet('Sheet 1')
+  book.add_sheet('Sheet 2')
+
+  sheet1.write(0,0,'A1')
+  sheet1.write(0,1,'B1')
+  row1 = sheet1.row(1)
+  row1.write(0,'A2')
+  row1.write(1,'B2')
+  sheet1.col(0).width = 10000
+
+  sheet2 = book.get_sheet(1)
+  sheet2.row(0).write(0,'Sheet 2 A1')
+  sheet2.row(0).write(1,'Sheet 2 B1')
+  sheet2.flush_row_data()
+  sheet2.write(1,0,'Sheet 2 A3')
+  sheet2.col(0).width = 5000
+  sheet2.col(0).hidden = True
+
+  book.save('simple.xls')
+  book.save(TemporaryFile())
+  
+  simple.py
+
 Unicode
 --------
 
-The best policy is to pass unicode objects to all
-xlwt
--related method calls.
+The best policy is to pass unicode objects to all ``xlwt``-related method calls.
 
-If you absolutely have to use encoded strings then make sure that the encoding used is consistent across all calls to any
-xlwt
--related methods.
+If you absolutely have to use encoded strings then make sure that the encoding used is consistent across all calls to any ``xlwt``-related methods.
 
-If encoded strings are used and the encoding is not
-'ascii'
-, then any
-Workbook
-objects must be created with the appropriate encoding specified:
+If encoded strings are used and the encoding is not ``'ascii'``, then any ``Workbook`` objects must be created with the appropriate encoding specified:
 
+::
 
-
+  from xlwt import Workbook
+  book = Workbook(encoding='utf-8')
 
 Writing to Cells
 ----------------
@@ -138,59 +102,56 @@ Different ways of writing cells
 
 There are generally three ways to write to a particular cell:
 
-* Worksheet.write(row_index,column_index,value)
+* ``Worksheet.write(row_index,column_index,value)``
 
-  * This is just syntactic sugar for sheet.row(row_index).write(column_index,value)
+  * This is just syntactic sugar for ``sheet.row(row_index).write(column_index,value)``.
 
+  * It can be useful when you only want to write one cell to a row.
 
-  * It can be useful when you only want to write one cell to a row
+* ``Row.write(column_index,value)``
 
-
-
-* Row.write(column_index,value)
-
-  * This will write the correct type of cell based on the value passed
-
+  * This will write the correct type of cell based on the value passed.
 
   * Because it figures out what type of cell to write, this method may be slower for writing large workbooks
-
-
 
 * Specialist write methods on the Row class
 
   * Each type of cell has a specialist setter method as covered in the “Types of Cell” section below.
 
-
   * These require you to pass the correct type of Python object but can be faster.
 
-
-
-In general, use Worksheet.write for convenience and the specialist write methods if you require speed for a large volume of data.
+In general, use ``Worksheet.write`` for convenience and the specialist write methods if you require speed for a large volume of data.
 
 Overwriting Cells
 ~~~~~~~~~~~~~~~~~
 
-The Excel file format does nothing to prevent multiple records for a particular cell occurring but, if this happens, the results will vary depending on what application is used to open the file. Excel will display a
-“File error: data may have been lost”
-while OpenOffice.org will show the last record for the cell that occurs in the file.
+The Excel file format does nothing to prevent multiple records for a particular cell occurring but, if this happens, the results will vary depending on what application is used to open the file. Excel will display a ``“File error: data may have been lost”`` while OpenOffice.org will show the last record for the cell that occurs in the file.
 
-To help prevent this,
-xlwt
-provides two modes of operation:
+To help prevent this, ``xlwt`` provides two modes of operation:
 
-* Writing to the same cell more than once will result in an exception
-  This is the default mode.
-
+* Writing to the same cell more than once will result in an exception.  This is the default mode.
 
 * Writing to the same cell more than once will replace the record for that cell, and only one record will be written when the Workbook is saved.
 
-
-
 The following example demonstrates these two options:
 
-The most common case for needing to overwrite cells is when an existing Excel file has been loaded into a Workbook instance using
-xlutils.copy
-.
+::
+
+  from xlwt import Workbook
+
+  book = Workbook()
+  sheet1 = book.add_sheet('Sheet 1',cell_overwrite_ok=True)
+  sheet1.write(0,0,'original')
+  sheet = book.get_sheet(0)
+  sheet.write(0,0,'new')
+
+  sheet2 = book.add_sheet('Sheet 2')
+  sheet2.write(0,0,'original')
+  sheet2.write(0,0,'new')
+  
+  overwriting.py
+
+The most common case for needing to overwrite cells is when an existing Excel file has been loaded into a Workbook instance using ``xlutils.copy``.
 
 Types of Cell
 -------------
@@ -200,163 +161,182 @@ All types of cell supported by the Excel file format can be written:
 Text
 ~~~~
 
-When passed a
-unicode
-or string, the
-write
-methods will write a Text cell.
+When passed a ``unicode`` or string, the ``write`` methods will write a ``Text`` cell.
 
-The
-set_cell_text
-method of the
-Row
-class can also be used to write Text cells.
+The ``set_cell_text`` method of the ``Row`` class can also be used to write ``Text`` cells.
 
 When passed a string, these methods will first decode the string using the Workbook's encoding.
 
 Number
 ~~~~~~
 
-When passed a
-float
-,
-int
-,
-long
-, or
-decimal.Decimal
-, the
-write
-methods will write a Number cell.
+When passed a ``float``, ``int``, ``long``, or ``decimal.Decimal``, the ``write`` methods will write a ``Number`` cell.
 
-The
-set_cell_number
-method of the
-Row
-class can also be used to write Number cells.
+The ``set_cell_number`` method of the ``Row`` class can also be used to write ``Number`` cells.
 
 Date
 ~~~~
 
-When passed a
-datetime.datetime
-,
-datetime.date
-or
-datetime.time
-, the
-write
-methods will write a Date cell.
+When passed a ``datetime.datetime``, ``datetime.date``, or ``datetime.time``, the ``write`` methods will write a ``Date`` cell.
 
-The
-set_cell_date
-method of the
-Row
-class can also be used to write Date cells.
+The ``set_cell_date`` method of the ``Row`` class can also be used to write ``Date`` cells.
 
-Note: As mentioned earlier, a date is not really a separate type in Excel; if you don't apply a date format, it will be treated as a number.
+**Note**: As mentioned earlier, a date is not really a separate type in Excel; if you don't apply a date format, it will be treated as a number.
 
 Boolean
 ~~~~~~~
 
-When passed a
-bool
-, the
-write
-methods will write a Boolean cell.
+When passed a ``bool``, the ``write`` methods will write a ``Boolean`` cell.
 
-The
-set_cell_boolean
-method of the
-Row
-class can also be used to write Text cells.
-
-
-
+The ``set_cell_boolean`` method of the ``Row`` class can also be used to write ``Text`` cells.
 
 Error
 ~~~~~
 
-You shouldn't ever want to write Error cells!
+You shouldn't ever want to write ``Error`` cells!
 
-However, if you absolutely must, the
-set_cell_error
-method of the Row class can be used to do so. For convenience, it can be called with either hexadecimal error codes, expressed as integers, or the error text that Excel would display.
+However, if you absolutely must, the ``set_cell_error`` method of the Row class can be used to do so. For convenience, it can be called with either hexadecimal error codes, expressed as integers, or the error text that Excel would display.
 
 Blank
 ~~~~~
 
 It is not normally necessary to write blank cells. The one exception to this is if you wish to apply formatting to a cell that contains nothing.
 
-To do this, either call the
-write
-methods with an empty string or None, or use the
-set_cell_blank
-method of the
-Row
-class.
+To do this, either call the ``write`` methods with an empty string or ``None``, or use the ``set_cell_blank`` method of the ``Row`` class.
 
-If you need to do this for more than one cell in a row, using the
-set_cell_mulblanks
-method will result in a smaller Excel file when the
-Workbook
-is saved.
+If you need to do this for more than one cell in a row, using the ``set_cell_mulblanks`` method will result in a smaller Excel file when the ``Workbook`` is saved.
 
+The following example brings all of the above cell types together and shows examples use both the generic ``write`` method and the specialist methods:
 
+::
 
-The following example brings all of the above cell types together and shows examples use both the generic
-write
-method and the specialist methods:
+  from datetime import date,time,datetime
+  from decimal import Decimal
+  from xlwt import Workbook,Style
 
+  wb = Workbook()
+  ws = wb.add_sheet('Type examples')
+  ws.row(0).write(0,u'\xa3')
+  ws.row(0).write(1,'Text')
+  ws.row(1).write(0,3.1415)
+  ws.row(1).write(1,15)
+  ws.row(1).write(2,265L)
+  ws.row(1).write(3,Decimal('3.65'))
+  ws.row(2).set_cell_number(0,3.1415)
+  ws.row(2).set_cell_number(1,15)
+  ws.row(2).set_cell_number(2,265L)
+  ws.row(2).set_cell_number(3,Decimal('3.65'))
+  ws.row(3).write(0,date(2009,3,18))
+  ws.row(3).write(1,datetime(2009,3,18,17,0,1))
+  ws.row(3).write(2,time(17,1))
+  ws.row(4).set_cell_date(0,date(2009,3,18))
+  ws.row(4).set_cell_date(1,datetime(2009,3,18,17,0,1))
+  ws.row(4).set_cell_date(2,time(17,1))
+  ws.row(5).write(0,False)
+  ws.row(5).write(1,True)
+  ws.row(6).set_cell_boolean(0,False)
+  ws.row(6).set_cell_boolean(1,True)
+  ws.row(7).set_cell_error(0,0x17)
+  ws.row(7).set_cell_error(1,'#NULL!')
+  ws.row(8).write(
+      0,'',Style.easyxf('pattern: pattern solid, fore_colour green;'))
+  ws.row(8).write(
+      1,None,Style.easyxf('pattern: pattern solid, fore_colour blue;'))
+  ws.row(9).set_cell_blank(
+      0,Style.easyxf('pattern: pattern solid, fore_colour yellow;'))
+  ws.row(10).set_cell_mulblanks(
+      5,10,Style.easyxf('pattern: pattern solid, fore_colour red;')
+      )
+
+  wb.save('types.xls')
+
+  cell_types.py
 
 Styles
 ------
 
 Most elements of an Excel file can be formatted. For many elements including cells, rows and columns, this is done by assigning a style, known as an XF record, to that element.
 
-This is done by passing an xlwt.XFStyle instance to the optional last argument to the various write methods and specialist set_cell_ methods. xlwt.Row and xlwt.Column instances have set_style methods to which an xlwt.XFStyle instance can be passed.
+This is done by passing an ``xlwt.XFStyle`` instance to the optional last argument to the various write methods and specialist ``set_cell_ methods``. ``xlwt.Row`` and ``xlwt.Column`` instances have ``set_style`` methods to which an ``xlwt.XFStyle`` instance can be passed.
 
 XFStyle
 ~~~~~~~
 
-In xlwt, the XF record is represented by the XFStyle class and its related attribute classes.
+In ``xlwt``, the XF record is represented by the ``XFStyle`` class and its related attribute classes.
 
-The following example shows how to create a red Date cell with Arial text and a black border:
+The following example shows how to create a red ``Date`` cell with Arial text and a black border:
+
+::
+
+  from datetime import date
+  from xlwt import Workbook, XFStyle, Borders, Pattern, Font
+
+  fnt = Font()
+  fnt.name = 'Arial'
+
+  borders = Borders()
+  borders.left = Borders.THICK
+  borders.right = Borders.THICK
+  borders.top = Borders.THICK
+  borders.bottom = Borders.THICK
+
+  pattern = Pattern()
+  pattern.pattern = Pattern.SOLID_PATTERN
+  pattern.pattern_fore_colour = 0x0A
+
+  style = XFStyle()
+  style.num_format_str='YYYY-MM-DD'
+  style.font = fnt
+  style.borders = borders
+  style.pattern = pattern
+
+  book = Workbook()
+  sheet = book.add_sheet('A Date')
+  sheet.write(1,1,date(2009,3,18),style)
+
+  book.save('date.xls')
+
+  xfstyle_format.py
 
 This can be quite cumbersome!
-
-
-
 
 easyxf
 ~~~~~~
 
-Thankfully,
-xlwt
-provides the
-easyxf
-helper to create
-XFStyle
-instances from human readable text and an optional string containing a number format.
+Thankfully, ``xlwt`` provides the ``easyxf`` helper to create ``XFStyle`` instances from human readable text and an optional string containing a number format.
 
-Here is the above example, this time created with easyxf:
+Here is the above example, this time created with ``easyxf``:
+
+::
+
+  from datetime import date
+  from xlwt import Workbook, easyxf
+
+  book = Workbook()
+  sheet = book.add_sheet('A Date')
+
+  sheet.write(1,1,date(2009,3,18),easyxf(
+      'font: name Arial;'
+      'borders: left thick, right thick, top thick, bottom thick;'
+      'pattern: pattern solid, fore_colour red;',
+      num_format_str='YYYY-MM-DD'
+      ))
+
+  book.save('date.xls')
+
+  easyxf_format.py
 
 The human readable text breaks roughly as follows, in pseudo-regular expression syntax:
 
-(<element>:(<attribute> <value>,)+;)+
+``(<element>:(<attribute> <value>,)+;)+``
 
 This means:
 
 * The text contains a semi-colon delimited list of element definitions.
 
-
 * Each element contains a comma-delimited list of attribute and value pairs.
 
-
 The following sections describe each of the types of element by providing a table of their attributes and possible values for those attributes. For explanations of how to express boolean values and colours, please see the “Types of attribute” section.
-
-
-
 
 font
 ~~~~
@@ -712,7 +692,7 @@ borders
 |               |                        |
 +---------------+------------------------+
 
-*This can be either an integer width between 0 and 13 or one of the following:
+* This can be either an integer width between 0 and 13 or one of the following:
 
 no_line, thin, medium, dashed, dotted, thick, double, hair, medium_dashed, thin_dash_dotted, medium_dash_dotted, thin_dash_dot_dotted, medium_dash_dot_dotted, slanted_medium_dash_dotted
 
