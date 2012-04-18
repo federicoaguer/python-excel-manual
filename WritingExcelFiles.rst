@@ -341,56 +341,56 @@ The following sections describe each of the types of element by providing a tabl
 font
 ~~~~
 
-+-----------------+-------------------------------------------------------------------------------------+
-| ``bold``        | A *boolean* value.                                                                  |
-|                 | The default is ``False``.                                                           |        
-+-----------------+-------------------------------------------------------------------------------------+
-| ``charset``     | The character set to use for this font, which can be one of the following:          |
-|                 |``ansi_latin``, ``sys_default``, ``symbol``, ``apple_roman``, ``ansi_jap_shift_jis``,|
-|                 | ``ansi_kor_hangul``, ``ansi_kor_johab``, ``ansi_chinese_gbk``, ``ansi_chinese_big5``|
-|                 |, ``ansi_greek``, ``ansi_turkish``, ``ansi_vietnamese``, ``ansi_hebrew``,            |
-|                 |``ansi_arabic``, ``ansi_baltic``, ``ansi_cyrillic``, ``ansi_thai``, ``ansi_latin_ii``|
-|                 |, ``oem_latin_i``.                                                                   |
-|                 | The default is ``sys_default``.                                                     |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``colour``      | A *colour* specifying the colour for the text.                                      |
-|                 | The default is the automatic colour.                                                |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``escapement``  | This can be one of ``none``, ``superscript``, or ``subscript``.                     |
-|                 | The default is  ``none``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``family``      | This should be a string containing the name of the font family to use. You probably |
-|                 | want to use ``name`` instead of this attribute and leave this to its default value. |
-|                 | The default is ``None``.                                                            |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``height``      | The height of the font as expressed by multiplying the point size by 20.            |
-|                 | The default is 200, which equates to 10pt.                                          |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``italic``      | A *boolean* value.                                                                  |
-|                 | The default is ``False``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``name``        | This should be a string containing the name of the font family to use.              |
-|                 | The default is ``Arial``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``outline``     | A *boolean*  value.                                                                 |
-|                 | The default is ``False``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``shadow``      | A *boolean* value.                                                                  |
-|                 | The default is ``False``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``struck_out``  | A *boolean* value.                                                                  |
-|                 | The default is ``False``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``underline``   | A *boolean* value or one of  ``none``, ``single``, ``single_acc``, ``double``, or   |
-|                 |``double_acc``.                                                                      |
-|                 | The default is ``none``.                                                            |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``color_index`` | A synonym for ``colour``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``colour_index``| A synonym for ``colour``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
-| ``color``       | A synonym for ``colour``.                                                           |
-+-----------------+-------------------------------------------------------------------------------------+
++-----------------+---------------------------------------------------------------------------------------+
+| ``bold``        | A *boolean* value.                                                                    |
+|                 | The default is ``False``.                                                             |        
++-----------------+---------------------------------------------------------------------------------------+
+| ``charset``     | The character set to use for this font, which can be one of the following:            |
+|                 | ``ansi_latin``, ``sys_default``, ``symbol``, ``apple_roman``, ``ansi_jap_shift_jis``, |
+|                 | ``ansi_kor_hangul``, ``ansi_kor_johab``, ``ansi_chinese_gbk``, ``ansi_chinese_big5``, |
+|                 | ``ansi_greek``, ``ansi_turkish``, ``ansi_vietnamese``, ``ansi_hebrew``,               |
+|                 | ``ansi_arabic``, ``ansi_baltic``, ``ansi_cyrillic``, ``ansi_thai``, ``ansi_latin_ii``,|
+|                 | ``oem_latin_i``.                                                                      |
+|                 | The default is ``sys_default``.                                                       |
++-----------------+---------------------------------------------------------------------------------------+
+| ``colour``      | A *colour* specifying the colour for the text.                                        |
+|                 | The default is the automatic colour.                                                  |
++-----------------+---------------------------------------------------------------------------------------+
+| ``escapement``  | This can be one of ``none``, ``superscript``, or ``subscript``.                       |
+|                 | The default is  ``none``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``family``      | This should be a string containing the name of the font family to use. You probably   |
+|                 | want to use ``name`` instead of this attribute and leave this to its default value.   |
+|                 | The default is ``None``.                                                              |
++-----------------+---------------------------------------------------------------------------------------+
+| ``height``      | The height of the font as expressed by multiplying the point size by 20.              |
+|                 | The default is 200, which equates to 10pt.                                            |
++-----------------+---------------------------------------------------------------------------------------+
+| ``italic``      | A *boolean* value.                                                                    |
+|                 | The default is ``False``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``name``        | This should be a string containing the name of the font family to use.                |
+|                 | The default is ``Arial``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``outline``     | A *boolean*  value.                                                                   |
+|                 | The default is ``False``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``shadow``      | A *boolean* value.                                                                    |
+|                 | The default is ``False``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``struck_out``  | A *boolean* value.                                                                    |
+|                 | The default is ``False``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``underline``   | A *boolean* value or one of  ``none``, ``single``, ``single_acc``, ``double``, or     |
+|                 | ``double_acc``.                                                                       |
+|                 | The default is ``none``.                                                              |
++-----------------+---------------------------------------------------------------------------------------+
+| ``color_index`` | A synonym for ``colour``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``colour_index``| A synonym for ``colour``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
+| ``color``       | A synonym for ``colour``.                                                             |
++-----------------+---------------------------------------------------------------------------------------+
 
 alignment
 ~~~~~~~~~
@@ -400,7 +400,7 @@ alignment
 |                   | The default is ``general``.                                                                         |
 +-------------------+-----------------------------------------------------------------------------------------------------+
 | ``horizontal``    | One of the following: ``general``, ``left``, ``center|centre``, ``right``, ``filled``, ``justified``|
-|                   |, ``center|centre_across_selection``, ``distributed``.                                               |
+|                   | , ``center|centre_across_selection``, ``distributed``.                                              |
 |                   | The default is ``general``.                                                                         |
 +-------------------+-----------------------------------------------------------------------------------------------------+
 | ``indent``        | A indentation amount between 0 and 15.                                                              |
@@ -486,36 +486,19 @@ borders
 pattern
 ~~~~~~~
 
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| back_colour         | A                                                                                                                                           |
-|                     | *colour*                                                                                                                                    |
-|                     | .                                                                                                                                           |
-|                     |                                                                                                                                             |
-|                     | The default is the                                                                                                                          |
-|                     | automatic                                                                                                                                   |
-|                     | colour.                                                                                                                                     |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| fore_colour         | A                                                                                                                                           |
-|                     | *colour*                                                                                                                                    |
-|                     | .                                                                                                                                           |
-|                     |                                                                                                                                             |
-|                     | The default is the                                                                                                                          |
-|                     | automatic                                                                                                                                   |
-|                     | colour.                                                                                                                                     |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| pattern             | One of the following:                                                                                                                       |
-|                     |                                                                                                                                             |
-|                     | no_fill, none, solid, solid_fill, solid_pattern, fine_dots, alt_bars, sparse_dots, thick_horz_bands, thick_vert_bands, thick_backward_diag, |
-|                     | thick_forward_diag, big_spots, bricks, thin_horz_bands, thin_vert_bands, thin_backward_diag, thin_forward_diag, squares, diamonds           |
-|                     |                                                                                                                                             |
-|                     |                                                                                                                                             |
-|                     | The default is                                                                                                                              |
-|                     | none                                                                                                                                        |
-|                     | .                                                                                                                                           |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
++---------------------+----------------------------------------------------------------------------------------------------------+
+| ``back_colour``     | A *colour*.                                                                                              |
+|                     | The default is the ``automatic`` colour.                                                                 |
++---------------------+----------------------------------------------------------------------------------------------------------+
+| ``fore_colour``     | A *colour*.                                                                                              |
+|                     | The default is  the ``automatic`` colour.                                                                |
++---------------------+----------------------------------------------------------------------------------------------------------+
+| ``pattern``         | One of the following: ``no_fill``, ``none``, ``solid``, ``solid_fill``, ``solid_pattern``, ``fine_dots``,|
+|                     | ``alt_bars``, ``sparse_dots``, ``thick_horz_bands``, ``thick_vert_bands``, ``thick_backward_diag``,      |
+|                     | ``thick_forward_diag``, ``big_spots``, ``bricks``, ``thin_horz_bands``, ``thin_vert_bands``,             |
+|                     | ``thin_backward_diag``, ``thin_forward_diag``, ``squares``, or ``diamonds``.                             |
+|                     | The default is ``none``.                                                                                 |
++---------------------+----------------------------------------------------------------------------------------------------------+
 | fore_color          | A synonym for                                                                                                                               |
 |                     | fore_colour                                                                                                                                 |
 |                     |                                                                                                                                             |
@@ -531,63 +514,39 @@ pattern
 | pattern_fore_color  | A synonym for                                                                                                                               |
 |                     | fore_colour                                                                                                                                 |
 |                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| pattern_back_colour | A synonym for                                                                                                                               |
-|                     | back_colour                                                                                                                                 |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| pattern_back_color  | A synonym for                                                                                                                               |
-|                     | back_colour                                                                                                                                 |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-
-
-
++-------------------------+------------------------------------------------------------------------------------------------------+
+| ``pattern_back_colour`` | A synonym for ``back_colour``.                                                                       |
++-------------------------+------------------------------------------------------------------------------------------------------+
+| ``pattern_back_color``  | A synonym for ``back_colour``.                                                                       |
++-------------------------+------------------------------------------------------------------------------------------------------+
 
 protection
 ~~~~~~~~~~
 
-The protection features of the Excel file format are only partially implemented in
-xlwt
-. Avoid them unless you plan on finishing their implementation.
+The protection features of the Excel file format are only partially implemented in ``xlwt``. Avoid them unless you plan on finishing their implementation.
 
-+----------------+----------------+
-| cell_locked    | A              |
-|                | *boolean*      |
-|                | value.         |
-|                |                |
-|                | The default is |
-|                | True           |
-|                | .              |
-|                |                |
-+----------------+----------------+
-| formula_hidden | A              |
-|                | *boolean*      |
-|                | value.         |
-|                |                |
-|                | The default is |
-|                | False          |
-|                | .              |
-|                |                |
-+----------------+----------------+
++--------------------+--------------------------+
+| ``cell_locked``    | A *boolean* value.       |
+|                    | The default is ``True``. |
++--------------------+--------------------------+
+| ``formula_hidden`` | A *boolean* value.       |
+|                    | The default is ``False``.|
++--------------------+--------------------------+
 
 align
 ~~~~~
 
-A synonym for
-alignment
+A synonym for ``alignment``.
 
 border
 ~~~~~~
 
-A synonym for
-borders
+A synonym for ``borders``
 
-Types of attribute
-~~~~~~~~~~~~~~~~~~
+Types of attributes
+~~~~~~~~~~~~~~~~~~~
 
-*Boolean*
-values are either True or False, but easyxf allows great flexibility in how you choose to express those two values:
+*Boolean* values are either ``True`` or ``False``, but ``easyxf`` allows great flexibility in how you choose to express those two values:
 
 * True
   can be expressed by
