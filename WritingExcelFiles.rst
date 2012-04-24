@@ -548,22 +548,35 @@ Types of attributes
 
 The names used are those reported by the Excel 2003 GUI when you are inspecting the **default** colour palette.
 
-Warning: There are many differences between this implicit mapping from colour-names to RGB values and the mapping used in standards such as HTML andCSS.
+Warning: There are many differences between this implicit mapping from colour-names to RGB values and the mapping used in standards such as HTML and CSS.
 
 +--------------------+------------------+---------------------+----------------+
 | ``aqua``           | ``dark_red_ega`` | ``light_blue``      | ``plum``       |
++--------------------+------------------+---------------------+----------------+
 | ``black``          | ``dark_teal``    | ``light_green``     | ``purple_ega`` |
++--------------------+------------------+---------------------+----------------+
 | ``blue``           | ``dark_yellow``  | ``light_orange``    | ``red``        |
++--------------------+------------------+---------------------+----------------+
 | ``blue_gray``      | ``gold``         | ``light_turquoise`` | ``rose``       |
++--------------------+------------------+---------------------+----------------+
 | ``bright_green``   | ``gray_ega``     | ``light_yellow``    | ``sea_green``  |
++--------------------+------------------+---------------------+----------------+
 | ``brown``          | ``gray25``       | ``lime``            | ``silver_ega`` |
++--------------------+------------------+---------------------+----------------+
 | ``coral``          | ``gray40``       | ``magenta_ega``     | ``sky_blue``   |
++--------------------+------------------+---------------------+----------------+
 | ``cyan_ega``       | ``gray50``       | ``ocean_blue``      | ``tan``        |
++--------------------+------------------+---------------------+----------------+
 | ``dark_blue``      | ``gray80``       | ``olive_ega``       | ``teal``       |
++--------------------+------------------+---------------------+----------------+
 | ``dark_blue_ega``  | ``green``        | ``olive_green``     | ``teal_ega``   |
++--------------------+------------------+---------------------+----------------+
 | ``dark_green``     | ``ice_blue``     | ``orange``          | ``turquoise``  |
++--------------------+------------------+---------------------+----------------+
 | ``dark_green_ega`` | ``indigo``       | ``pale_blue``       | ``violet``     |
++--------------------+------------------+---------------------+----------------+
 | ``dark_purple``    | ``ivory``        | ``periwinkle``      | ``white``      |
++--------------------+------------------+---------------------+----------------+
 | ``dark_red``       | ``lavender``     | ``pink``            | ``yellow``     |
 +--------------------+------------------+---------------------+----------------+
 
@@ -872,11 +885,17 @@ xlwt.Workbook
 
 +--------------------+------------------+---------------------+
 | ``owner``          | ``vpos``         | ``hscroll_visible`` |
++--------------------+------------------+---------------------+
 | ``country_code``   | ``width``        | ``vscroll_visible`` |
++--------------------+------------------+---------------------+
 | ``wnd_protect``    | ``height``       | ``tabs_visible``    |
++--------------------+------------------+---------------------+
 | ``obj_protect``    | ``active_sheet`` | ``dates_1904``      |
++--------------------+------------------+---------------------+
 | ``protect``        | ``tab_width``    | ``use_cell_values`` |
++--------------------+------------------+---------------------+
 | ``backup_on_save`` | ``wnd_visible``  |                     |
++--------------------+------------------+---------------------+
 | ``hpos``           | ``wnd_mini``     |                     |
 +--------------------+------------------+---------------------+
 
@@ -885,16 +904,96 @@ xlwt.Row
 
 +------------------------+---------------------+-----------------+
 | ``set_style``          | ``height_mismatch`` | ``hidden``      |
++------------------------+---------------------+-----------------+
 | ``height``             | ``level``           | ``space_above`` |
++------------------------+---------------------+-----------------+
 | ``has_default_height`` | ``collapse``        | ``space_below`` |
 +------------------------+---------------------+-----------------+
 
 xlwt.Column
 ~~~~~~~~~~~
 
++---------------------+------------+--------------+
+| ``set_style``       | ``width``  | ``level``    |
+| ``width_in_pixels`` | ``hidden`` | ``collapse`` |
++---------------------+------------+--------------+
 
 xlwt.Worksheet
 ~~~~~~~~~~~~~~
+
++---------------------------------+-------------------------+
+| ``name``                        | ``save_recalc``         |
++---------------------------------+-------------------------+
+| ``visibility``                  | ``print_headers``       |
++---------------------------------+-------------------------+
+| ``row_default_height_mismatch`` | ``print_grid``          |
++---------------------------------+-------------------------+
+| ``row_default_hidden``          | ``header_str``          |
++---------------------------------+-------------------------+
+| ``row_default_space_above``     | ``footer_str``          |
++---------------------------------+-------------------------+
+| ``row_default_space_below``     | ``print_centered_vert`` |
++---------------------------------+-------------------------+
+| ``show_formulas``               | ``print_centered_horz`` |
++---------------------------------+-------------------------+
+| ``show_grid``                   | ``left_margin``         |
++---------------------------------+-------------------------+
+| ``show_headers``                | ``right_margin``        |
++---------------------------------+-------------------------+
+| ``show_zero_values``            | ``top_margin``          |
++---------------------------------+-------------------------+
+| ``auto_colour_grid``            | ``bottom_margin``       |
++---------------------------------+-------------------------+
+| ``cols_right_to_left``          | ``paper_size_code``     |
++---------------------------------+-------------------------+
+| ``show_outline``                | ``print_scaling``       |
++---------------------------------+-------------------------+
+| ``remove_splits``               | ``start_page_number``   |
++---------------------------------+-------------------------+
+| ``selected``                    | ``fit_width_to_pages``  |
++---------------------------------+-------------------------+
+| ``sheet_visible``               | ``fit_height_to_pages`` |
++---------------------------------+-------------------------+
+| ``page_preview``                | ``print_in_rows``       |
++---------------------------------+-------------------------+
+| ``first_visible_row``           | ``portrait``            |
++---------------------------------+-------------------------+
+| ``first_visible_col``           | ``print_colour``        |
++---------------------------------+-------------------------+
+| ``grid_colour``                 | ``print_draft``         |
++---------------------------------+-------------------------+
+| ``dialog_sheet``                | ``print_notes``         |
++---------------------------------+-------------------------+
+| ``auto_style_outline``          | ``print_notes_at_end``  |
++---------------------------------+-------------------------+
+| ``outline_below``               | ``print_omit_errors``   |
++---------------------------------+-------------------------+
+| ``outline_right``               | ``print_hres``          |
++---------------------------------+-------------------------+
+| ``fit_num_pages``               | ``header_margin``       |
++---------------------------------+-------------------------+
+| ``show_row_outline``            | ``footer_margin``       |
++---------------------------------+-------------------------+
+| ``show_col_outline``            | ``copies_num``          |
++---------------------------------+-------------------------+
+| ``alt_expr_eval``               | ``wnd_protect``         |
++---------------------------------+-------------------------+
+| ``alt_formula_entries``         | ``obj_protect``         |
++---------------------------------+-------------------------+
+| ``row_default_height``          | ``protect``             |
++---------------------------------+-------------------------+
+| ``col_default_height``          | ``scen_protect``        |
++---------------------------------+-------------------------+
+| ``calc_mode``                   | ``password``            |
++---------------------------------+-------------------------+
+| ``calc_count``                  |                         |
++---------------------------------+-------------------------+
+| ``RC_ref_mode``                 |                         |
++---------------------------------+-------------------------+
+| ``iterations_on``               |                         |
++---------------------------------+-------------------------+
+| ``delta``                       |                         |
++---------------------------------+-------------------------+
 
 Some examples of Other Properties
 ---------------------------------
@@ -906,79 +1005,133 @@ Hyperlinks
 
 Hyperlinks are a type of formula as shown in the following example:
 
+::
+
+  from xlwt import Workbook,easyxf,Formula
+  
+  style = easyxf('font: underline single')
+  
+  book = Workbook()
+  sheet = book.add_sheet('Hyperlinks')
+  
+  sheet.write(
+      0, 0,
+      Formula('HYPERLINK("http://www.python.org";"Python")'),
+      style)
+  
+  link = 'HYPERLINK("mailto:python-excel@googlegroups.com";"help")'
+  sheet.write(
+      1,0,
+      Formula(link),
+      style)
+  
+  book.save("hyperlinks.xls")
+  hyperlinks.py
+
 Images
 ~~~~~~~
 
-Images can be inserted using the
-insert_bitmap
-method of the
-Sheet
-class:
+Images can be inserted using the ``insert_bitmap`` method of the ``Sheet`` class:
 
-NB: Images are not displayed by OpenOffice.org
+::
 
+  from xlwt import Workbook
+  w = Workbook()
+  ws = w.add_sheet('Image')
+  ws.insert_bitmap('python.bmp', 0, 0)
+  w.save('images.xls')
+  images.py
 
-
+**NB**: Images are not displayed by ``OpenOffice.org``.
 
 Merged cells
 ~~~~~~~~~~~~
 
-Merged groups of cells can be inserted using the
-write_merge
-method of the
-Sheet
-class:
+Merged groups of cells can be inserted using the ``write_merge`` method of the ``Sheet`` class:
+
+::
+
+  from xlwt import Workbook,easyxf
+  style = easyxf(
+      'pattern: pattern solid, fore_colour red;'
+      'align: vertical center, horizontal center;'
+      )
+  w = Workbook()
+  ws = w.add_sheet('Merged')
+  ws.write_merge(1,5,1,5,'Merged',style)
+  w.save('merged.xls')
+  merged.py
 
 Borders
 ~~~~~~~
 
 Writing a single cell with borders is simple enough, however applying a border to a group of cells is painful as shown in this example:
 
-NB: Extra care needs to be taken if you're updating an existing Excel file!
+::
 
+  from xlwt import Workbook,easyxf
+  tl = easyxf('border: left thick, top thick')
+  t = easyxf('border: top thick')
+  tr = easyxf('border: right thick, top thick')
+  r = easyxf('border: right thick')
+  br = easyxf('border: right thick, bottom thick')
+  b = easyxf('border: bottom thick')
+  bl = easyxf('border: left thick, bottom thick')
+  l = easyxf('border: left thick')
+  
+  w = Workbook()
+  ws = w.add_sheet('Border')
+  ws.write(1,1,style=tl)
+  ws.write(1,2,style=t)
+  ws.write(1,3,style=tr)
+  ws.write(2,3,style=r)
+  ws.write(3,3,style=br)
+  ws.write(3,2,style=b)
+  ws.write(3,1,style=bl)
+  ws.write(2,1,style=l)
+  
+  w.save('borders.xls')
+  borders.py
 
-
+**NB**: Extra care needs to be taken if you're updating an existing Excel file!
 
 Split and Freeze panes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-It is fairly straight forward to create frozen panes using
-xlwt
-.
+It is fairly straight forward to create frozen panes using ``xlwt``.
 
-The location of the split is specified using the integer
-vert_split_pos
-and
-horz_split_pos
-properties of the
-Sheet
-class.
+The location of the split is specified using the integer ``vert_split_pos`` and ``horz_split_pos`` properties of the ``Sheet`` class.
 
-The first visible cells are specified using the integer
-vert_split_first_visible
-and
-horz_split_first_visible
-properties of the Sheet class.
+The first visible cells are specified using the integer ``vert_split_first_visible`` and ``horz_split_first_visible`` properties of the ``Sheet`` class.
 
 The following example shows them all in action:
 
-Split panes are a less frequently used feature and their support is less complete in
-xlwt
-.
+::
 
-The procedure for creating split panes is exactly the same as for frozen panes except that the
-panes_frozen
-attribute of the Worksheet should be set to
-False
-instead of
-True
-.
+  from xlwt import Workbook
+  from xlwt.Utils import rowcol_to_cell
+  
+  w = Workbook()
+  sheet = w.add_sheet('Freeze')
+  sheet.panes_frozen = True
+  sheet.remove_splits = True
+  sheet.vert_split_pos = 2
+  sheet.horz_split_pos = 10
+  sheet.vert_split_first_visible = 5
+  sheet.horz_split_first_visible = 40
+  
+  for col in range(20):
+      for row in range(80):
+          sheet.write(row,col,rowcol_to_cell(row,col))
+  
+  w.save('panes.xls')
+  panes.py
+
+Split panes are a less frequently used feature and their support is less complete in ``xlwt``.
+
+The procedure for creating split panes is exactly the same as for frozen panes except that the ``panes_frozen`` attribute of the Worksheet should be set to ``False`` instead of ``True``.
 
 However, if you really need split panes, you're advised to see professional help before proceeding!
-
-
-
-
 
 Outlines
 ~~~~~~~~~
@@ -987,17 +1140,71 @@ These are a little known and little used feature of the Excel file format that c
 
 Their use is best shown by example:
 
+::
 
+  from xlwt import Workbook
+  data = [
+      ['','','2008','','2009'],
+      ['','','Jan','Feb','Jan','Feb'],
+      ['Company X'],
+      ['','Division A'],
+      ['','',100,200,300,400],
+      ['','Division B'],
+      ['','',100,99,98,50],
+      ['Company Y'],
+      ['','Division A'],
+      ['','',100,100,100,100],
+      ['','Division B'],
+      ['','',100,101,102,103],
+      ]
+  w = Workbook()
+  ws = w.add_sheet('Outlines')
+  for i,row in enumerate(data):
+      for j,cell in enumerate(row):
+          ws.write(i,j,cell)
+  ws.row(2).level = 1
+  ws.row(3).level = 2
+  ws.row(4).level = 3
+  ws.row(5).level = 2
+  ws.row(6).level = 3
+  ws.row(7).level = 1
+  ws.row(8).level = 2
+  ws.row(9).level = 3
+  ws.row(10).level = 2
+  ws.row(11).level = 3
+  ws.col(2).level = 1
+  ws.col(3).level = 2
+  ws.col(4).level = 1
+  ws.col(5).level = 2
+  w.save('outlines.xls')
+  outlines.py
 
 
 Zoom magnification and Page Break Preview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The zoom percentage used when viewing a sheet in normal mode can be controlled by setting the normal_magn attribute of a Sheet instance.
+The zoom percentage used when viewing a sheet in ``normal`` mode can be controlled by setting the ``normal_magn`` attribute of a ``Sheet`` instance.
 
-The zoom percentage used when viewing a sheet in page break preview mode can be controlled by setting the preview_magn attribute of a Sheet instance.
+The zoom percentage used when viewing a sheet in ``page break preview`` mode can be controlled by setting the ``preview_magn`` attribute of a ``Sheet`` instance.
 
-A Sheet can also be made to show a page break preview by setting the page_preview attribute of the Sheet instance to True.
+A ``Sheet`` can also be made to show a ``page break preview`` by setting the ``page_preview`` attribute of the ``Sheet`` instance to ``True``.
 
 Here's an example to show all three in action:
 
+::
+
+  from xlwt import Workbook
+  
+  w = Workbook()
+  
+  ws = w.add_sheet('Normal')
+  ws.write(0,0,'Some text')
+  ws.normal_magn = 75
+  
+  ws = w.add_sheet('Page Break Preview')
+  ws.write(0,0,'Some text')
+  ws.preview_magn = 150
+  ws.page_preview = True
+  
+  w.save('zoom.xls')
+  zoom.py
