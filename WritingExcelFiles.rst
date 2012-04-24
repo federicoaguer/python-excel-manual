@@ -486,39 +486,31 @@ borders
 pattern
 ~~~~~~~
 
-+---------------------+----------------------------------------------------------------------------------------------------------+
-| ``back_colour``     | A *colour*.                                                                                              |
-|                     | The default is the ``automatic`` colour.                                                                 |
-+---------------------+----------------------------------------------------------------------------------------------------------+
-| ``fore_colour``     | A *colour*.                                                                                              |
-|                     | The default is  the ``automatic`` colour.                                                                |
-+---------------------+----------------------------------------------------------------------------------------------------------+
-| ``pattern``         | One of the following: ``no_fill``, ``none``, ``solid``, ``solid_fill``, ``solid_pattern``, ``fine_dots``,|
-|                     | ``alt_bars``, ``sparse_dots``, ``thick_horz_bands``, ``thick_vert_bands``, ``thick_backward_diag``,      |
-|                     | ``thick_forward_diag``, ``big_spots``, ``bricks``, ``thin_horz_bands``, ``thin_vert_bands``,             |
-|                     | ``thin_backward_diag``, ``thin_forward_diag``, ``squares``, or ``diamonds``.                             |
-|                     | The default is ``none``.                                                                                 |
-+---------------------+----------------------------------------------------------------------------------------------------------+
-| fore_color          | A synonym for                                                                                                                               |
-|                     | fore_colour                                                                                                                                 |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| back_color          | A synonym for                                                                                                                               |
-|                     | back_colour                                                                                                                                 |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| pattern_fore_colour | A synonym for                                                                                                                               |
-|                     | fore_colour                                                                                                                                 |
-|                     |                                                                                                                                             |
-+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------+
-| pattern_fore_color  | A synonym for                                                                                                                               |
-|                     | fore_colour                                                                                                                                 |
-|                     |                                                                                                                                             |
-+-------------------------+------------------------------------------------------------------------------------------------------+
-| ``pattern_back_colour`` | A synonym for ``back_colour``.                                                                       |
-+-------------------------+------------------------------------------------------------------------------------------------------+
-| ``pattern_back_color``  | A synonym for ``back_colour``.                                                                       |
-+-------------------------+------------------------------------------------------------------------------------------------------+
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``back_colour``         | A *colour*.                                                                                              |
+|                         | The default is the ``automatic`` colour.                                                                 |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``fore_colour``         | A *colour*.                                                                                              |
+|                         | The default is  the ``automatic`` colour.                                                                |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``pattern``             | One of the following: ``no_fill``, ``none``, ``solid``, ``solid_fill``, ``solid_pattern``, ``fine_dots``,|
+|                         | ``alt_bars``, ``sparse_dots``, ``thick_horz_bands``, ``thick_vert_bands``, ``thick_backward_diag``,      |
+|                         | ``thick_forward_diag``, ``big_spots``, ``bricks``, ``thin_horz_bands``, ``thin_vert_bands``,             |
+|                         | ``thin_backward_diag``, ``thin_forward_diag``, ``squares``, or ``diamonds``.                             |
+|                         | The default is ``none``.                                                                                 |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``fore_color``          | A synonym  for ``fore_colour``.                                                                          |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``back_color``          | A synonym for ``back_colour``.                                                                           |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``pattern_fore_colour`` | A synonym for ``fore_colour``.                                                                           |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``pattern_fore_color``  | A synonym for ``fore_colour``.                                                                           |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``pattern_back_colour`` | A synonym for ``back_colour``.                                                                           |
++-------------------------+----------------------------------------------------------------------------------------------------------+
+| ``pattern_back_color``  | A synonym for ``back_colour``.                                                                           |
++-------------------------+----------------------------------------------------------------------------------------------------------+
 
 protection
 ~~~~~~~~~~
@@ -548,92 +540,93 @@ Types of attributes
 
 *Boolean* values are either ``True`` or ``False``, but ``easyxf`` allows great flexibility in how you choose to express those two values:
 
-* True
-  can be expressed by
-  1
-  ,
-  yes
-  ,
-  true
-  or
-  on
+* ``True`` can be expressed by ``1``, ``yes``, ``true``, or ``on``.
 
+* ``False`` can be expressed by ``0``, ``no``, ``false``, or ``off``.
 
-* False
-  can be expressed by
-  0
-  ,
-  no
-  ,
-  false
-  , or
-  off
+*Colours* in Excel files are a confusing mess. The safest bet to do is just pick from the following list of colour names that ``easyxf`` understands.
 
+The names used are those reported by the Excel 2003 GUI when you are inspecting the **default** colour palette.
 
-*Colours*
-in Excel files are a confusing mess. The safest bet to do is just pick from the following list of colour names that
-easyxf
-understands.
+Warning: There are many differences between this implicit mapping from colour-names to RGB values and the mapping used in standards such as HTML andCSS.
 
-The names used are those reported by the Excel 2003 GUI when you are inspecting the
-default
-colour palette.
++--------------------+------------------+---------------------+----------------+
+| ``aqua``           | ``dark_red_ega`` | ``light_blue``      | ``plum``       |
+| ``black``          | ``dark_teal``    | ``light_green``     | ``purple_ega`` |
+| ``blue``           | ``dark_yellow``  | ``light_orange``    | ``red``        |
+| ``blue_gray``      | ``gold``         | ``light_turquoise`` | ``rose``       |
+| ``bright_green``   | ``gray_ega``     | ``light_yellow``    | ``sea_green``  |
+| ``brown``          | ``gray25``       | ``lime``            | ``silver_ega`` |
+| ``coral``          | ``gray40``       | ``magenta_ega``     | ``sky_blue``   |
+| ``cyan_ega``       | ``gray50``       | ``ocean_blue``      | ``tan``        |
+| ``dark_blue``      | ``gray80``       | ``olive_ega``       | ``teal``       |
+| ``dark_blue_ega``  | ``green``        | ``olive_green``     | ``teal_ega``   |
+| ``dark_green``     | ``ice_blue``     | ``orange``          | ``turquoise``  |
+| ``dark_green_ega`` | ``indigo``       | ``pale_blue``       | ``violet``     |
+| ``dark_purple``    | ``ivory``        | ``periwinkle``      | ``white``      |
+| ``dark_red``       | ``lavender``     | ``pink``            | ``yellow``     |
++--------------------+------------------+---------------------+----------------+
 
-Warning: There are many differences
-between this implicit mapping from colour-names to RGB values and the mapping used in standards such as HTML andCSS.
-
-
-NB:
-grey
-can be used instead of
-gray
-wherever it occurs above.
+**NB**: ``grey`` can be used instead of ``gray`` wherever it occurs above.
 
 Formatting Rows and Columns
 ---------------------------
 
-It is possible to specify default formatting for rows and columns within a worksheet. This is done using the
-set_style
-method of the
-Row
-and
-Column
-instances, respectively.
+It is possible to specify default formatting for rows and columns within a worksheet. This is done using the ``set_style`` method of the ``Row`` and ``Column`` instances, respectively.
 
 The precedence of styles is as follows:
 
 * the style applied to a cell
 
-
 * the style applied to a row
-
 
 * the style applied to a column
 
+It is also possible to hide whole rows and columns by using the ``hidden`` attribute of ``Row`` and ``Column`` instances.
 
-It is also possible to hide whole rows and columns by using the
-hidden
-attribute of Row and Column instances.
+The width of a ``Column`` can be controlled by setting its ``width`` attribute to an integer where 1 is 1/256 of the width of the zero character, using the first font that occurs in the Excel file.
 
-The width of a
-Column
-can be controlled by setting its
-width
-attribute to an integer where 1 is 1/256 of the width of the zero character, using the first font that occurs in the Excel file.
-
-By default, the height of a row is determined by the tallest font for that row and the
-height
-attribute of the row is ignored.
-If you want the
-height
-attribute to be used, the row's
-height_mismatch
-attribute needs to be set to
-1
-.
-
+By default, the height of a row is determined by the tallest font for that row and the ``height`` attribute of the row is ignored.
+If you want the ``height`` attribute to be used, the row's ``height_mismatch`` attribute needs to be set to ``1``.
 
 The following example shows these methods and properties in use along with the style precedence:
+
+::
+  
+  from xlwt import Workbook, easyxf
+  from xlwt.Utils import rowcol_to_cell
+  
+  row = easyxf('pattern: pattern solid, fore_colour blue')
+  col = easyxf('pattern: pattern solid, fore_colour green')
+  cell = easyxf('pattern: pattern solid, fore_colour red')
+  
+  book = Workbook()
+  
+  sheet = book.add_sheet('Precedence')
+  for i in range(0,10,2):
+      sheet.row(i).set_style(row)
+  for i in range(0,10,2):
+      sheet.col(i).set_style(col)
+  for i in range(10):
+      sheet.write(i,i,None,cell)
+  
+  sheet = book.add_sheet('Hiding')
+  for rowx in range(10):
+      for colx in range(10):
+          sheet.write(rowx,colx,rowcol_to_cell(rowx,colx))                    
+  for i in range(0,10,2):
+      sheet.row(i).hidden = True
+      sheet.col(i).hidden = True
+  
+  sheet = book.add_sheet('Row height and Column width')
+  for i in range(10):
+      sheet.write(0,i,0)
+  for i in range(10):
+      sheet.row(i).set_style(easyxf('font:height '+str(200*i)))
+      sheet.col(i).width = 256*i
+  
+  book.save('format_rowscols.xls')
+  format_rowscols.py
 
 Formatting Sheets and Workbooks
 -------------------------------
@@ -644,103 +637,112 @@ Most of them you will never need or want to touch.
 
 If you think you do, see the “Other Properties” section below.
 
-
-
-
 Style compression
 -----------------
 
-While its fine to create as many XFStyle and their associated Font instances as you like, each one written to Workbook will result in an XF record and a Font record. Excel has fixed limits of around 400 Fonts and 4000 XF records so care needs to be taken when generating large Excel files.
+While it is fine to create as many XFStyles and their associated Font instances as you like, each one written to ``Workbook`` will result in an XF record and a Font record. Excel has fixed limits of around 400 Fonts and 4000 XF records so care needs to be taken when generating large Excel files.
 
-To help with this,
-xlwt.Workbook
-has an optional
-style_compression
-parameter with the following meaning:
+To help with this, ``xlwt.Workbook`` has an optional ``style_compression`` parameter with the following meaning:
 
 * 0 – no compression. This is the default.
 
-
 * 1 – compress Fonts only. Not very useful.
-
 
 * 2 – compress Fonts and XF records.
 
-
 The following example demonstrates these three options:
+
+::
+
+  from xlwt import Workbook, easyxf
+  
+  style1 = easyxf('font: name Times New Roman')
+  style2 = easyxf('font: name Times New Roman')
+  style3 = easyxf('font: name Times New Roman')
+  
+  def write_cells(book):
+      sheet = book.add_sheet('Content')
+      sheet.write(0,0,'A1',style1)
+      sheet.write(0,1,'B1',style2)
+      sheet.write(0,2,'C1',style3)
+      
+  book = Workbook()
+  write_cells(book)
+  book.save('3xf3fonts.xls')
+  
+  book = Workbook(style_compression=1)
+  write_cells(book)
+  book.save('3xf1font.xls')
+  
+  book = Workbook(style_compression=2)
+  write_cells(book)
+  book.save('1xf1font.xls')
+  stylecompression.py
 
 Be aware that doing this compression involves deeply nested comparison of the XFStyle objects, so may slow down writing of large files where many styles are used.
 
-The recommended best practice is to create all the styles you will need in advance and leave
-style_compression
-at its default value.
-
-
-
+The recommended best practice is to create all the styles you will need in advance and leave ``style_compression`` at its default value.
 
 Formulae
 --------
 
-Formulae can be written by
-xlwt
-by passing an
-xlwt.Formula
-instance to either of the write methods or by using the
-set_cell_formula
-method of
-Row
-instances, bugs allowing.
+Formulae can be written by ``xlwt`` by passing an ``xlwt.Formula`` instance to either of the write methods or by using the ``set_cell_formula`` method of ``Row`` instances, bugs allowing.
 
 The following are supported:
 
 * all the built-in Excel formula functions
 
-
 * references to other sheets in the same workbook
-
 
 * access to all the add-in functions in the Analysis Toolpak (ATP)
 
-
 * comma or semicolon as the argument separator in function calls
 
-
 * case-insensitive matching of formula names
-
 
 The following are not suppoted:
 
 * references to external workbooks
 
-
 * array aka Ctrl-Shift-Enter aka CSE formulas
-
 
 * references to defined Names
 
-
 * using formulas for data validation or conditional formatting
-
 
 * evaluation of formulae
 
-
 The following example shows some of these things in action:
+
+::
+
+  from xlwt import Workbook, Formula
+  
+  book = Workbook()
+  
+  sheet1 = book.add_sheet('Sheet 1')
+  sheet1.write(0,0,10)
+  sheet1.write(0,1,20)
+  sheet1.write(1,0,Formula('A1/B1'))
+  
+  sheet2 = book.add_sheet('Sheet 2')
+  row = sheet2.row(0)
+  row.write(0,Formula('sum(1,2,3)'))
+  row.write(1,Formula('SuM(1;2;3)'))
+  row.write(2,Formula("$A$1+$B$1*SUM('ShEEt 1'!$A$1:$b$2)"))
+  
+  book.save('formula.xls')
+  formulae.py
 
 Names
 -----
 
-Names cannot currently be written by
-xlwt
-.
-
-
-
+Names cannot currently be written by ``xlwt``.
 
 Utility methods
 ---------------
 
-The Utils module of xlwt contains several useful utility functions:
+The ``Utils`` module of ``xlwt`` contains several useful utility functions:
 
 col_by_name
 ~~~~~~~~~~~
@@ -750,33 +752,33 @@ This will convert a string containing a column identifier into an integer column
 cell_to_rowcol
 ~~~~~~~~~~~~~~
 
-This will convert a string containing an excel cell reference into a four-element tuple containing:
+This will convert a string containing an excel cell reference into a four-element tuple containing: 
 
-(row,col,row_abs,col_abs)
+``(row,col,row_abs,col_abs)``
 
-row
+``row``
 – integer row index of the referenced cell
 
-col
+``col``
 – integer column index of the referenced cell
 
-row_abs
-– boolean indicating whether the row index is absolute (True) or relative (False)
+``row_abs``
+– *boolean* indicating whether the row index is absolute (``True``) or relative (``False``)
 
-col_abs
-– boolean indicating whether the column index is absolute (True) or relative (False)
+``col_abs``
+– *boolean* indicating whether the column index is absolute (``True``) or relative (``False``)
 
 cell_to_rowcol2
 ~~~~~~~~~~~~~~~
 
 This will convert a string containing an excel cell reference into a two-element tuple containing:
 
-(row,col)
+``(row,col)``
 
-row
+``row``
 – integer row index of the referenced cell
 
-col
+``col``
 – integer column index of the referenced cell
 
 rowcol_to_cell
@@ -789,47 +791,103 @@ cellrange_to_rowcol_pair
 
 This will convert a string containing an excel range into a four-element tuple containing:
 
-(row1,col1,row2,col2)
+``(row1,col1,row2,col2)``
 
-row1
+``row1``
 – integer row index of the start of the range
 
-col1
+``col1``
 – integer column index of the start of the range
 
-row2
+``row2``
 – integer row index of the end of the range
 
-col2
+``col2``
 – integer column index of the end of the range
 
 rowcol_pair_to_cellrange
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This will covert a pair of
-integer row and column indexes into a string containing an excel cell range. Any of the
+This will covert a pair of integer row and column indexes into a string containing an Excel cell range. Any of the
 indexes specified can optionally be made to be absolute.
 
 valid_sheet_name
 ~~~~~~~~~~~~~~~~
 
-This function takes a single string argument and returns a boolean value indication whether the sheet name will work without problems (True) or will cause complaints from Excel (False).
+This function takes a single string argument and returns a *boolean* value indication whether the sheet name will work without problems (``True``) or will cause complaints from Excel (``False``).
 
 The following example shows all of these functions in use:
 
+::
 
-
+  from xlwt import Utils
+  
+  print 'AA ->',Utils.col_by_name('AA')
+  print 'A ->',Utils.col_by_name('A')
+  
+  print 'A1 ->',Utils.cell_to_rowcol('A1')
+  print '$A$1 ->',Utils.cell_to_rowcol('$A$1')
+  
+  print 'A1 ->',Utils.cell_to_rowcol2('A1')
+  
+  print (0,0),'->',Utils.rowcol_to_cell(0,0)
+  print (0,0,False,True),'->',
+  print Utils.rowcol_to_cell(0,0,False,True)
+  print (0,0,True,True),'->',
+  print Utils.rowcol_to_cell(
+            row=0,col=0,row_abs=True,col_abs=True
+            )
+  
+  print '1:3 ->',Utils.cellrange_to_rowcol_pair('1:3')
+  print 'B:G ->',Utils.cellrange_to_rowcol_pair('B:G')
+  print 'A2:B7 ->',Utils.cellrange_to_rowcol_pair('A2:B7')
+  print 'A1 ->',Utils.cellrange_to_rowcol_pair('A1')
+  
+  print (0,0,100,100),'->',
+  print Utils.rowcol_pair_to_cellrange(0,0,100,100)
+  print (0,0,100,100,True,False,False,False),'->',
+  print Utils.rowcol_pair_to_cellrange(
+            row1=0,col1=0,row2=100,col2=100,
+            row1_abs=True,col1_abs=False,
+            row2_abs=False,col2_abs=True
+            )
+  
+  for name in (
+      '',"'quoted'","O'hare","X"*32,"[]:\\?/*\x00"
+      ):
+      print 'Is %r a valid sheet name?' % name,
+      if Utils.valid_sheet_name(name):
+          print "Yes"
+      else:
+          print "No"
+  utilities.py
 
 Other properties
 ----------------
 
-There are many other properties that you can set on xlwt-related objects. They are all listed below, for each of the types of object. The names are mostly intuitive but you are warned to experiment thoroughly before attempting to use any of these in an important situation as some properties exist that aren't saved to the resulting Excel files and some others are only partially implemented.
+There are many other properties that you can set on ``xlwt``-related objects. They are all listed below, for each of the types of object. The names are mostly intuitive but you are warned to experiment thoroughly before attempting to use any of these in an important situation as some properties exist that aren't saved to the resulting Excel files and some others are only partially implemented.
 
 xlwt.Workbook
 ~~~~~~~~~~~~~
 
++--------------------+------------------+---------------------+
+| ``owner``          | ``vpos``         | ``hscroll_visible`` |
+| ``country_code``   | ``width``        | ``vscroll_visible`` |
+| ``wnd_protect``    | ``height``       | ``tabs_visible``    |
+| ``obj_protect``    | ``active_sheet`` | ``dates_1904``      |
+| ``protect``        | ``tab_width``    | ``use_cell_values`` |
+| ``backup_on_save`` | ``wnd_visible``  |                     |
+| ``hpos``           | ``wnd_mini``     |                     |
++--------------------+------------------+---------------------+
+
 xlwt.Row
 ~~~~~~~~
+
++------------------------+---------------------+-----------------+
+| ``set_style``          | ``height_mismatch`` | ``hidden``      |
+| ``height``             | ``level``           | ``space_above`` |
+| ``has_default_height`` | ``collapse``        | ``space_below`` |
++------------------------+---------------------+-----------------+
 
 xlwt.Column
 ~~~~~~~~~~~
