@@ -1,44 +1,45 @@
 Filtering Excel Files
 =====================
 
-Any examples shown below can be found in the 'xlutils' directory of the course material.
+Any examples shown below can be found in the
+xlutils
+directory of the course material.
 
 Other utilities in xlutils
 --------------------------
 
-The 'xlutils' package contains several utilities in addition to those for filtering. The following are often useful:
+The
+xlutils
+package contains several utilities in addition to those for filtering. The following are often useful:
 
 xlutils.styles
 ~~~~~~~~~~~~~~
 
-This module contains one class which, when instantiated with an 'xlrd.Workbook', will let you discover the style name and information from a given cell in that workbook as shown in the following example:
+This module contains one class which, when instantiated with an
+xlrd.Workbook
+, will let you discover the style name and information from a given cell in that workbook as shown in the following example:
 
-::
+NB: For obvious reasons,
+open_workbook
+must be called with
+formatting_info=True
+in order to use
+xlutils.styles
+.
 
-  from xlrd import open_workbook
-  from xlutils.styles import Styles
-  
-  book = open_workbook('source.xls',formatting_info=True)
-  styles = Styles(book)
-  sheet = book.sheet_by_index(0)
-  
-  print styles[sheet.cell(1,1)].name
-  print styles[sheet.cell(1,2)].name
-  
-  A1_style = styles[sheet.cell(0,0)]
-  A1_font = book.font_list[A1_style.xf.font_index]
-  print book.colour_map[A1_font.colour_index]
-  
-  styles.py
+Full documentation and examples can be found in the
+styles.txt
+file in the docs folder of
+xlutils
+' source distribution.
 
-NB: For obvious reasons, 'open_workbook' must be called with 'formatting_info=True' in order to use 'xlutils.styles'.
 
-Full documentation and examples can be found in the 'styles.txt' file in the docs folder of the 'xlutils' source distribution.
+
 
 xlutils.display
 ~~~~~~~~~~~~~~~~
 
-This module contains utility functions for easy and safe display of information returned by 'xlrd'.
+This module contains utility functions for easy and safe display of information returned by xlrd.
 
 quoted_sheet_name
 is called with the
