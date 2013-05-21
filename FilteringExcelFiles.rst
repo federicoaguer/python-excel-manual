@@ -115,7 +115,7 @@ Structure of xlutils.filter
 
 This framework is designed to filter and split Excel files using a series of modular readers, filters and writers as shown in the diagram below:
 
-.. image:: Object_1.png
+.. image:: images/Object_1.png
 
 The flow of information between the components is by method calls on the next component in the chain. The possible method calls are listed in the table below, where 'rdbook' is an 'xlrd.Book' instance; 'rdsheet' is an 'xlrd.sheet.Sheet' instance; 'rdrowx', 'rdcolx', 'wtrowx', and 'wtcolx' and integer indices specifying the cell to read from and write to; 'wtbook_name' is a string specifying the name of the Excel file to write to; and 'wtsheet_name' is a 'unicode' specifying the name of the sheet to write to:
 
