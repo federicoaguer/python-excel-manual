@@ -13,6 +13,8 @@
 
 import sys, os
 
+os.environ['__GEN_DOCS__'] = "1"
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -25,7 +27,9 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.autosummary',]
+
+todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -40,7 +44,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Tutorial'
+project = u'python-excel-tutorial'
 copyright = u'2012, Landon Jurgens, Chris Withers'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -91,22 +95,22 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'pyramid' #'haiku' #'agogo' #'pyramid' #'nature' #'default'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = "python-excel-tutorial" 
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-#html_short_title = None
+html_short_title =  "python-excel-tutorial" 
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
@@ -164,7 +168,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Tutorialdoc'
+htmlhelp_basename = 'python-excel-tutorial-doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,8 +187,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Tutorial.tex', u'Tutorial Documentation',
-   u'Landon Jurgens, Chris Withers', 'manual'),
+  ('index', 'python-excel-tutorial.tex', u'Python Excel Tutorial', u'Landon Jurgens, Chris Withers', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
