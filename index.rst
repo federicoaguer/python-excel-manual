@@ -10,6 +10,8 @@
     FilteringExcelFiles
     PossibleTasksforWorkshop
 
+.. automodule:: xlwt
+   :members:
 
 
 Indices and tables
