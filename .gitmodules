@@ -1,0 +1,3 @@
+[submodule "xlwt"]
+	path = xlwt
+	url = git://github.com/pedromorgan/xlwt.git
