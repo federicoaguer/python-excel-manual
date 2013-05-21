@@ -1,8 +1,4 @@
 
-.. image:: images/simplistix.gif
-    :width: 6.98cm
-    :height: 1.56cm
-    
 .. toctree::
     :maxdepth: 2
 
@@ -13,11 +9,6 @@
     WritingExcelFiles
     FilteringExcelFiles
     PossibleTasksforWorkshop
-
-.. |10000200000001FE00000073E274FE6D_gif| image:: images/simplistix.gif
-    :width: 6.98cm
-    :height: 1.56cm
-
 
 
 
