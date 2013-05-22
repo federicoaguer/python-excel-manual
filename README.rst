@@ -54,25 +54,3 @@ in working with Excel files in Python.
     * http://www.lexicon.net/sjmachin
 * Simplistix
     * http://www.simplistix.co.uk/
-    
-
-.. toctree::
-    :maxdepth: 2
-
-    WorkingwithExcelfilesinPython
-    Introduction
-    Installation
-    ReadingExcelFiles
-    WritingExcelFiles
-    FilteringExcelFiles
-    PossibleTasksforWorkshop
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
