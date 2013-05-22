@@ -32,6 +32,7 @@ Install using Windows Installer
 
 On Windows, you can download and run the xlrd-0.7.1.win32.exe installer.
 
+
 Beware that this will only install to Python installations that are in the Windows registry.
 
 Install using EasyInstall
@@ -42,6 +43,7 @@ This cross-platform method requires that you already have EasyInstall installed.
 ::
 
   easy_install xlrd
+
 
 Installation using Buildout
 ---------------------------
