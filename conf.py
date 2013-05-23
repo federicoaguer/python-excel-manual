@@ -16,12 +16,14 @@ import datetime
 
 os.environ['__GEN_DOCS__'] = "1"
 
-PROJECT_MOD = "python-excel-manual"
-PROJECT_TITLE = "Python Excel Manual"
-PROJECT_DESCRIPTION = "read and write Excel files with python"
+__PYTHON_EXCEL_MODULE__ = "python-excel-manual"
+__PYTHON_EXCEL_TITLE__ = "Python Excel Manual"
+
 
 VERSION = "2013.5.1"
 AUTHOR = '%s, Landon Jurgens, Chris Withers' % datetime.datetime.now().year
+
+html_context = {"XL": {"mod": __PYTHON_EXCEL_MODULE__}}
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -65,7 +67,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = PROJECT_MOD
+project = __PYTHON_EXCEL_MODULE__
 copyright = AUTHOR
 
 # The version info for the project you're documenting, acts as replacement for
@@ -116,7 +118,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'pyramid' #'haiku' #'agogo' #'pyramid' #'nature' #'default'
+html_theme = 'nature' #'haiku' #'agogo' #'pyramid' #'nature' #'default'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -128,14 +130,14 @@ html_theme_options = {}
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "%s - %s" % (PROJECT_TITLE, PROJECT_DESCRIPTION)
+html_title = "%s - %s" % (__PYTHON_EXCEL_MODULE__, __PYTHON_EXCEL_TITLE__)
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title =  PROJECT_MOD
+html_short_title =  __PYTHON_EXCEL_MODULE__
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "images/logo.gif"
+#html_logo = "images/logo.gif"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -178,7 +180,7 @@ html_show_sourcelink = True
 html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-html_show_copyright = True
+html_show_copyright = False
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
@@ -189,7 +191,7 @@ html_show_copyright = True
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = '%s-doc' % PROJECT_MOD
+htmlhelp_basename = '%s-doc' % __PYTHON_EXCEL_MODULE__
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -208,7 +210,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', '%s.tex' % PROJECT_MOD,  PROJECT_DESCRIPTION, AUTHOR, 'manual'),
+  ('index', '%s.tex' % __PYTHON_EXCEL_MODULE__,  __PYTHON_EXCEL_TITLE__, AUTHOR, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -237,7 +239,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'tutorial', PROJECT_DESCRIPTION,
+    ('index', 'tutorial', __PYTHON_EXCEL_TITLE__,
      [u'Landon Jurgens, Chris Withers'], 1)
 ]
 
@@ -251,9 +253,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', "index", PROJECT_TITLE,
+  ('index', "index", __PYTHON_EXCEL_TITLE__,
    AUTHOR, 'Tutorial', 
-  PROJECT_DESCRIPTION,
+  __PYTHON_EXCEL_TITLE__,
    'Miscellaneous'),
 ]
 
@@ -270,5 +272,7 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'xlwt': ('https://xlwt.readthedocs.org/en/latest/', None),
+    'xlrd': ('https://xlrd.readthedocs.org/en/latest/', None),
+    'xlutils': ('https://xlutils.readthedocs.org/en/latest/', None),
     'python': ('http://docs.python.org/3.2', None),
     }

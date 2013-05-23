@@ -1,7 +1,6 @@
 python-excel.org
 ===========================
 
-PLEASE BUIDL ME
 
 Reading and Writing Excel files with python
 
@@ -14,24 +13,24 @@ The Packages
 * They are fast, reliable and open source
 
 
-xlrd - Excel Reader
+:py:mod:`xlrd` - Excel Reader
 ===========================
 Reading data and formatting information from Excel files
 
 Download | Documentation | GitHub
 
 
-xlwt - Excel Writer
+:py:mod:`xlwt` - Excel Writer
 ===============================
 Writing data and formatting information to Excel files.
 
 Download | Documentation | Examples | GitHub
 
-xlutils - Excel Wtils
+:py:mod:`xlutils` - Excel Utils
 ===============================
-* utilities that require both xlrd and xlwt, 
-* including the ability to copy and modify 
-* filter existing excel files.
+Utilities that require both :py:mod:`xlrd` and :py:mod:`xlwt`, 
+including the ability to copy and modify 
+filter existing excel files.
 
 Download | Documentation | GitHub
 
@@ -52,9 +51,9 @@ Sponsors and Commercial Development
 ===================================
 The following companies can provide commercial software development and consultancy and are specialists 
 in working with Excel files in Python.
-* Lingfo
+ * Lingfo
     * http://www.lexicon.net/sjmachin
-* Simplistix
+ * Simplistix
     * http://www.simplistix.co.uk/
     
 
